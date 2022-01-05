@@ -34,15 +34,15 @@
 
 <body>
 	<div class="sidenav">
-		<a href="/PHP_Forum/php_exam/login.php">Login</a>
-		<a href="/PHP_Forum/php_exam/register.php">Register</a>
-		<a href="/PHP_Forum/php_exam/home.php">Home</a>
-		<a href="/PHP_Forum/php_exam/new.php">New</a>
-		<a href="/PHP_Forum/php_exam/details.php">Details</a>
-		<a href="/PHP_Forum/php_exam/edit.php">Edit</a>
-		<a href="/PHP_Forum/php_exam/account.php">Account</a>
-		<a href="/PHP_Forum/php_exam/connexion_admin.php">Connexion Admin</a>
-		<a href="/PHP_Forum/php_exam/panel_admin.php">Panel Admin</a>
+		<a href="/php_forum/login.php">Login</a>
+		<a href="/php_forum/register.php">Register</a>
+		<a href="/php_forum/home.php">Home</a>
+		<a href="/php_forum/new.php">New</a>
+		<a href="/php_forum/details.php">Details</a>
+		<a href="/php_forum/edit.php">Edit</a>
+		<a href="/php_forum/account.php">Account</a>
+		<a href="/php_forum/connexion_admin.php">Connexion Admin</a>
+		<a href="/php_forum/panel_admin.php">Panel Admin</a>
 	</div>
 </body>
 
