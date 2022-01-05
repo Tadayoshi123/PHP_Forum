@@ -1,0 +1,59 @@
+{{define "register"}}
+<!-- Faire le css -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projet Forum</title>
+    <link rel="icon" href="/static/img/icon/forum.png">
+    <link rel="stylesheet" href="/static/css/register.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div id="forum_tittle">
+                <a href="/index">Forum</a>  
+            </div>
+        </nav>
+    </header>
+
+    <div class="registration">
+        <div class="L-Title flex padding">
+            <h1>Inscription</h1>
+        </div>
+        <p class="obligation">Remplissez ce formulaire d'adhésion</p>
+        <br>
+        <div class="RegisterForm flex padding">
+            <form  method="GET">
+                <div class="username">
+                    <label for="username"> Pseudo : </label>
+                    <input type="text" placeholder="Entrez un Pseudo" name="username" required>
+                </div>
+                <div class="email">
+                    <label for="email"> Email : </label>
+                    <input type="email" placeholder="Entrez votre email" name="email" required>
+                </div>
+                <div class="password">
+                    <label for="password"> Mot de Passe : </label>
+                    <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
+                </div>
+                <div class="psw-repeat">
+                    <label for="psw-repeat"> Confirmez le Mot de Passe : </label>
+                    <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
+                </div>
+                <p class="obligation">{{.Error}}</p>
+                <br>
+                <div class="clear flex">
+                    <button type="submit" class="signupbtn">Inscription</button>
+                    <a href="/index" class="cancelbtn">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div> 
+</body>
+</html>
+{{end}}
