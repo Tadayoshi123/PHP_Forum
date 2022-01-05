@@ -50,3 +50,11 @@
         </div>
     </div>
 </body>
+
+<?php
+echo $_GET['username'];
+echo $_GET['email'];
+echo $_GET['psw'];
+echo $_GET['psw_repeat'];
+
+?>

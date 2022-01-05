@@ -1,0 +1,397 @@
+html,
+body {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Montserrat Alternates', sans-serif;
+    color: whitesmoke; 
+    background-color : #232323;
+    background-image: url("https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    z-index: 1;
+}
+
+* {
+  margin: 0;
+}
+
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Navbar style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.navbar {
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    font-family: 'Lobster', cursive;
+    margin-bottom: 6vh;
+    
+} 
+
+#forum_tittle{
+    margin-left: 1vw;
+} 
+#forum_tittle {
+    font-size: 25px;
+}
+
+#forum_tittle a {
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: 35px;
+    font-weight: 900;
+} 
+
+#menu {
+    display: flex;
+    align-items: center;
+}
+
+#menu a {
+    text-decoration: none;
+    color: whitesmoke;
+    padding: 20px;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+#menu a:hover {
+    color: tomato;
+}
+.Deconnexion {
+    font-family: 'Lobster', cursive;
+    background: none;
+    border: solid 0.2px whitesmoke;
+    border-radius: 50px;
+    color: whitesmoke;
+    padding: 20px;
+    font-size: 22px;
+    cursor: pointer;
+    margin-left: 1vw;
+}
+
+.Deconnexion:hover {
+    background-color: rgb(255, 231, 17);
+    color: rgb(219, 65, 38);
+    border-radius: 50px;
+}
+
+
+.Inscription {
+    border: solid 0.2px whitesmoke;
+    border-radius: 50px;
+}
+
+.Inscription:hover {
+    background-color: rgb(255, 231, 17);
+    color: rgb(219, 65, 38);
+    border-radius: 50px;
+}
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Content style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+.main_content {
+    background-color: rgba(0, 0, 0, 0.856);
+    box-shadow: 0 0 20px 0 rgb(255, 255, 255);
+    width: 70%;
+    position: relative;
+    top: -4%;
+    left: 15%;
+    border-radius: 40px;
+    color: whitesmoke;
+    z-index: 1;
+
+}
+
+.margin3vw {
+    margin-right: 3vw;
+    margin-left: 3vw;
+}
+
+.padding {
+    padding: 25px;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.listepost-T {
+    border-top: solid 1px whitesmoke;
+    border-bottom: solid 1px whitesmoke;
+    margin-bottom: 2.5vh;
+    margin-left: 4vw;
+    margin-right: 3.5vw;
+}
+.listepost-T h1{
+    font-family: 'Lobster', cursive;
+    font-weight: 400;
+}
+
+.listeCom-P {
+    width: 50%;
+    border-top: solid 1px whitesmoke;
+    border-bottom: solid 1px whitesmoke;
+    margin-bottom: 2.5vh;
+    margin-left: 18vw;
+    margin-right: 3.5vw;
+    margin-top: 2vh;
+}
+.listeCom-P h2{
+    font-family: 'Lobster', cursive;
+    font-weight: 400;
+}
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Content bottom------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.userinfo label {
+    font-size: 22px ;
+    font-family: 'Lobster', cursive;
+}
+
+.left {
+    width: 15%;
+    border-right: solid 1px whitesmoke;
+}
+
+.role_user p{
+    margin-left: 3%;
+    font-style: italic;
+    text-transform: capitalize;
+    font-size: 18px;
+}
+
+.img_user {
+    margin-bottom: 1vh;
+}
+
+.img_user img {
+    width: 90px;
+    border: solid 2px whitesmoke;
+    border-radius: 20px;
+}
+
+.right {
+    width: 85%;
+    margin-bottom: 3vh;
+}
+
+.info {
+    border-top: solid 1px whitesmoke;
+    border-bottom: solid 1px whitesmoke;
+    margin-bottom: 2.5vh;
+}
+
+.info h1 {
+    font-family: 'Lobster', cursive;
+    font-weight: 500;
+}
+
+.user_name {
+    margin-top: -0.5vh;
+    justify-content: flex-start;
+}
+
+.user_name p {
+    margin-left: 1vw;
+    font-size: 18px;
+    font-style: italic;
+}
+
+.user_email {
+    margin-top: 0.5vh;
+    justify-content: flex-start;
+}
+
+.user_email p {
+    margin-left: 1vw;
+    font-size: 18px;
+    font-style: italic;
+}
+
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------ContentPost------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.postinfo a {
+    text-decoration: none;
+    color: whitesmoke;
+}
+
+.post_de_user {
+    background-color: #232323;
+    border: 1px solid whitesmoke;
+    border-radius: 40px;
+    width: 70%;
+}
+
+.nom_post {
+    justify-content: space-between;
+    padding: 10px;
+    border-bottom: 1px solid whitesmoke;
+}
+
+.nom_post label {
+    font-size: 22px ;
+    font-family: 'Lobster', cursive;
+}
+
+.nom_post p {
+    margin-left: 1vw;
+    font-size: 17px;
+}
+
+.post_content {
+    padding: 10px;
+    margin-top: -0.5vh;
+}
+.post_content label {
+    font-size: 22px ;
+    font-family: 'Lobster', cursive;
+}
+
+.post_content p {
+    margin-left: 1vw;
+    margin-top: 0.5vh;
+    margin-bottom: 1vh;
+    font-size: 17px;
+    overflow-wrap: anywhere ;
+    text-align: justify;
+}
+
+.post_categorie {
+    justify-content: space-between;
+}
+
+.post_categorie p {
+    border: 1px solid whitesmoke;
+    border-radius: 30px;
+    width: 150%;
+    text-align: center;
+}
+
+.like img{
+    width: 20px;
+}
+.dislike {
+    margin-left: 1vw;
+}
+.dislike img{
+    width: 20px;
+}
+.suppost img{
+    width: 25px;
+}
+
+.btn-sup {
+    background-color: transparent;
+    border-radius: 50px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    margin-left: 1.5vw;
+}
+
+.btn-sup:hover {
+    border: 1px solid rgb(0,0,0, 0.8);
+    box-shadow: 0 0 10px 0 rgb(255 255 255);
+}
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------CommentPost------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.commentaire {
+    margin-bottom: 2vh;
+    height: 24vh;
+    overflow-y: scroll;
+}
+
+.post__comment{
+    background-color: #232323;
+    border: 1px solid whitesmoke;
+    border-radius: 40px;
+    width: 50%;
+    margin-bottom: 2vh;
+}
+
+.post_comment_descrip {
+    margin-bottom: 1vh;
+}
+
+.date_ld_sup {
+    justify-content: space-between;
+}
+
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+-------------------------------------Liked/Disliked Post---------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.Post_liked_disliked {
+    justify-content: space-between;
+}
+
+.Post_liked {
+    width: 50%;
+    border-top: solid 1px whitesmoke;
+    border-bottom: solid 1px whitesmoke;
+    margin-bottom: 2.5vh;
+    margin-right: 10vw;
+    margin-top: -2vh;
+}
+.Post_disliked {
+    width: 50%;
+    border-top: solid 1px whitesmoke;
+    border-bottom: solid 1px whitesmoke;
+    margin-bottom: 2.5vh;
+    margin-left:  3.5vw;
+    margin-top: -2vh;
+}
+.T-PL h2{
+    font-family: 'Lobster', cursive;
+    font-weight: 400;
+}
+
+
+
+/*----------------Scrollbar-----------------*/
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    border: 1px solid #232323;
+    box-shadow: 0 0 10px 0 rgb(255 255 255);
+    border-radius: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 12px;
+    background-color: rgb(147, 63, 252);
+    border-radius: 10px;
+}
+/*------------------------------------------*/

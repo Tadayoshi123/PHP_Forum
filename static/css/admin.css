@@ -1,0 +1,335 @@
+html,
+body {
+    margin: 0;
+    overflow-x: hidden;
+    font-family: 'Montserrat Alternates', sans-serif;
+    color: whitesmoke; 
+    background-color : #232323;
+    background-image: url("https://i.pinimg.com/originals/47/0a/19/470a19a36904fe200610cc1f41eb00d9.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh;
+    z-index: 1;
+}
+
+* {
+  margin: 0;
+}
+
+.flex {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.margin3vw {
+    margin-right: 3vw;
+    margin-left: 3vw;
+}
+
+.padding {
+    padding: 18px;
+}
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Navbar style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.navbar {
+    width: 100vw;
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Lobster', cursive;
+    margin-bottom: 6vh;
+    
+} 
+
+
+#forum_tittle a {
+    text-decoration: none;
+    color: whitesmoke;
+    font-size: 60px;
+    font-weight: 200;
+}
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Content style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.M-Title {
+    font-family: 'Lobster', cursive;
+    font-weight: 300;
+    font-size: 25px;
+    margin-top: 2vh;
+    margin-bottom: 4vh;
+}
+
+.bg {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.carduser {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    grid-column-gap: 4vw;
+    grid-row-gap: 5vh;
+    overflow-y: scroll;
+    height: 30vh;
+}
+
+.userinfo {
+    background-color: #232323;
+    border: 1px solid whitesmoke;
+    border-radius: 50px;
+    box-shadow: 0 0 12px 0 rgb(255, 255, 255);
+}
+
+.userinfo label {
+    font-size: 22px ;
+    font-family: 'Lobster', cursive;
+}
+
+.left {
+    width: 20%;
+    border-right: solid 1px whitesmoke;
+}
+
+.role_user p{
+    margin-left: 3%;
+    font-style: italic;
+    text-transform: capitalize;
+    font-size: 17px;
+}
+
+.img_user {
+    margin-bottom: 1vh;
+}
+
+.img_user img {
+    width: 80px;
+    border: solid 2px whitesmoke;
+    border-radius: 20px;
+}
+
+.right {
+    width: 85%;
+    margin-bottom: 3vh;
+}
+
+.info {
+    border-top: solid 1px whitesmoke;
+    border-bottom: solid 1px whitesmoke;
+    margin-bottom: 2.5vh;
+}
+
+.info h1 {
+    font-family: 'Lobster', cursive;
+    font-weight: 500;
+}
+
+.user_name {
+    margin-top: -0.5vh;
+    justify-content: flex-start;
+}
+
+.user_name p {
+    margin-left: 1vw;
+    font-size: 18px;
+    font-style: italic;
+}
+
+.user_email {
+    margin-top: 0.5vh;
+    justify-content: flex-start;
+}
+
+.user_email p {
+    margin-left: 1vw;
+    font-size: 18px;
+    font-style: italic;
+}
+
+.btnpromotion {
+    font-family: 'Lobster', cursive;
+    background: none;
+    border: solid 0.2px whitesmoke;
+    border-radius: 50px;
+    color: whitesmoke;
+    padding: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 1vw;
+}
+
+.btnpromotion:hover {
+    background-color: rgb(50, 158, 28);
+    color: whitesmoke;
+    border-radius: 50px;
+}
+
+.btndemote{
+    font-family: 'Lobster', cursive;
+    background: none;
+    border: solid 0.2px whitesmoke;
+    border-radius: 50px;
+    color: whitesmoke;
+    padding: 12px;
+    font-size: 20px;
+    cursor: pointer;
+    margin-left: 1vw;
+}
+
+.btndemote:hover{
+    background-color: rgb(219, 65, 38);
+    color: whitesmoke;
+    border-radius: 50px;
+}
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Categorie style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.category {
+    border-bottom: 1px solid whitesmoke;
+    justify-content: space-between;
+    border-radius: 30px;
+    background-color: #232323;
+}
+
+.category:hover {
+    background-color: rgb(147, 63, 252);
+    border-radius: 30px;
+}
+.bg2 {
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+    border-radius: 30px;
+}
+
+.btn-sup {
+    background-color: transparent;
+    border-radius: 50px;
+    padding: 10px;
+    cursor: pointer;
+    border: none;
+    margin-left: 1.5vw;
+}
+
+.btn-sup:hover {
+    border: 1px solid rgb(0,0,0, 0.8);
+    box-shadow: 0 0 10px 0 rgb(255 255 255);
+}
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------AddCategorie style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.cateadd {
+    margin-top: 4vh;
+    width: 60%;
+    margin-left: 20%;
+    margin-right: 20%;
+}
+
+.label {
+    background-color: rgb(0,0,0, 0.8);
+    border-radius: 20px;
+}
+
+.addcatego label {
+    font-size:20px ;
+    font-family: 'Lobster', cursive;
+}
+
+.addcatego input {
+    margin:15px 0;
+	padding:15px 10px;
+	width:60%;
+	outline:none;
+	border:1px solid whitesmoke;
+	border-radius:20px;
+	display:inline-block;
+}
+
+.addinput {
+    justify-content: space-evenly;
+}
+
+.add {
+    background-color: rgb(38, 86, 219);
+    font-family: 'Lobster', cursive;
+    border: solid 0.2px whitesmoke;
+    border-radius: 50px;
+    padding: 10px 40px;
+    font-size: 20px;
+    cursor: pointer;
+    width: 10%;
+    color:whitesmoke;
+}
+
+.add:hover {
+    background-color:rgb(219, 65, 38);
+    color: whitesmoke;
+    box-shadow: 0 0 10px 0 rgb(255 255 255);
+}
+
+
+
+
+/* 
+-----------------------------------------------------------------------------------------------------------------
+---------------------------------------------Retourn style -------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------------
+*/
+
+.returnbtn a {
+    color: whitesmoke;
+    text-decoration: none;
+}
+
+.returnbtn {
+    background-color: rgb(219, 65, 38);
+    font-family: 'Lobster', cursive;
+    border: solid 0.2px whitesmoke;
+    border-radius: 50px;
+    padding: 12px 50px;
+    font-size: 25px;
+    cursor: pointer;
+    width: 10%;
+}
+
+.returnbtn:hover {
+    background-color: rgb(147, 63, 252);
+    color: whitesmoke;
+    box-shadow: 0 0 10px 0 rgb(255 255 255);
+}
+
+/*----------------Scrollbar-----------------*/
+::-webkit-scrollbar {
+    width: 15px;
+}
+
+::-webkit-scrollbar-track {
+    border: 1px solid #232323;
+    box-shadow: 0 0 10px 0 rgb(255 255 255);
+    border-radius: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+    height: 12px;
+    background-color: rgb(147, 63, 252);
+    border-radius: 10px;
+}
+/*------------------------------------------*/
