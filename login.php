@@ -51,8 +51,8 @@
         </div>
     </div>
 </body>
-
-<!-- <?php 
+<!-- 
+<?php 
 echo $_GET['user_mail'];
 echo $_GET['user_password']; 
 ?> -->
