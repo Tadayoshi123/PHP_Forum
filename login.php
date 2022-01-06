@@ -4,10 +4,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet Forum</title>
     <link rel="icon" href="/static/img/icon/forum.png">
-    <link rel="stylesheet" href="/static/css/login.css">
+    <link rel="stylesheet" href="/static/css/logincss.php">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
+
 
 <body>
     <header>
@@ -51,8 +52,15 @@
         </div>
     </div>
 </body>
-<!-- 
-<?php 
+
+
+
+<?php
+$mysqli = new mysqli("localhost", "root", "root", "php_exam"); // Connexion à la db "php_exam"
+// si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
+
+$result = $mysqli->query("SELECT UserId , Email, Password From Users"); // On utilise l'instance créée pour faire une requête
+echo $result;
 echo $_GET['user_mail'];
-echo $_GET['user_password']; 
-?> -->
+echo $_GET['user_password'];
+?>

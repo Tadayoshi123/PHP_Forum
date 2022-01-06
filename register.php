@@ -4,7 +4,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Projet Forum</title>
     <link rel="icon" href="/static/img/icon/forum.png">
-    <link rel="stylesheet" href="/static/css/register.css">
+    <link rel="stylesheet" href="/static/css/registercss.php">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
@@ -51,10 +51,53 @@
     </div>
 </body>
 
+
 <?php
-echo $_GET['username'];
-echo $_GET['email'];
-echo $_GET['psw'];
-echo $_GET['psw_repeat'];
+
+$username = $_GET['username'];
+$email = $_GET['email'];
+$psw = $_GET['psw'];
+$psw_repeat = $_GET['psw_repeat'];
+
+
+if ($psw==$psw_repeat){
+    
+    
+    try {
+        $mysqli  = new mysqli("localhost", "root", "root", "php_exam_db"); // Connexion à la db "php_exam"
+    } catch (Exception $e) {
+        die('Erreur : ' . $e->getMessage());
+    }
+
+    // // Ecriture de la requête
+    // $sqlQuery = "INSERT INTO users (UserName,Password,Email,IsAdmin) VALUES ('UserName','Password','Email','IsAdmin')";
+
+    $stmt = $mysqli->prepare('INSERT INTO users (UserName,Password,Email) VALUES (?, ?, ?)');
+    $stmt->bind_param("sss", $username, $email, $psw);
+    $stmt->execute();
+
+    echo "test";
+    $stmt->close();
+    $mysqli->close();
+
+    // $mysql->query($sql);
+
+    // echo "test";
+    // $mysql->close();
+    
+    // // Préparation
+    // $insert = $mysqli->prepare($sqlQuery);
+    // echo "success";
+    // // Exécution ! La recette est maintenant en base de données
+    // $insert->execute([
+    //     'UserName' => $username,
+    //     'Password' => $email,
+    //     'Email' => $psw,
+    //     'IsAdmin' => false, // 1 = true, 0 = false
+    // ]);
+    
+}
+
+
 
 ?>
