@@ -4,5 +4,5 @@ CREATE TABLE Articles
     Title VARCHAR(80) NOT NULL,
     Description VARCHAR(80) NOT NULL,
     CreationDate DATE NOT NULL,
-    UserId INTEGER KEY NOT NULL
+    UserId INTEGER NOT NULL
 )

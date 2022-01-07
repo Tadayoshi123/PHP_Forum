@@ -72,7 +72,7 @@ if ($psw==$psw_repeat){
     // // Ecriture de la requête
     // $sqlQuery = "INSERT INTO users (UserName,Password,Email,IsAdmin) VALUES ('UserName','Password','Email','IsAdmin')";
 
-    $stmt = $mysqli->prepare('INSERT INTO users (UserName,Password,Email) VALUES (?, ?, ?)');
+    $stmt = $mysqli->prepare('INSERT INTO Users (UserName,Password,Email) VALUES (?, ?, ?)');
     $stmt->bind_param("sss", $username, $email, $psw);
     $stmt->execute();
 

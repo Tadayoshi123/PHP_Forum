@@ -1,2 +1,2 @@
-SELECT ArticleId, Title, CreatedDate
+SELECT ArticleId, Title, CreationDate
 From Articles
