@@ -36,7 +36,7 @@
                     <input type="password" id="password" name="user_password" required>
                 </div>
                 <div class="btnLogin flex">
-                    <button class="LOGIN" type="submit">Connexion</button>
+                    <button class="LOGIN" type="submit" name="login_user">Connexion</button>
                 </div>
             </form>
         </div>
@@ -56,11 +56,33 @@
 
 
 <?php
-$mysqli = new mysqli("localhost", "root", "root", "php_exam"); // Connexion à la db "php_exam"
-// si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
+$errors = array();
+if (isset($_GET['login_user'])) {
+    $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
 
-$result = $mysqli->query("SELECT UserId , Email, Password From Users"); // On utilise l'instance créée pour faire une requête
-echo $result;
-echo $_GET['user_mail'];
-echo $_GET['user_password'];
+    $email = mysqli_real_escape_string($mysqli, $_GET['user_mail']);
+    $password = mysqli_real_escape_string($mysqli, $_GET['user_password']);
+
+    // $password = md5($password);
+    $query = "SELECT * FROM Users WHERE Email='$email' AND Password='$password'";
+    $results = mysqli_query($mysqli, $query);
+    echo mysqli_num_rows($results);
+    if (mysqli_num_rows($results) == 1) {
+
+        $_SESSION['email'] = $email;
+        $_SESSION['success'] = "You are now logged in";
+        header('location: index.php');
+    } else {
+        array_push($errors, "Wrong email/password combination");
+    }
+}
+
 ?>
+
+<?php if (count($errors) > 0) : ?>
+    <div class="error">
+        <?php foreach ($errors as $error) : ?>
+            <p><?php echo $error ?></p>
+        <?php endforeach ?>
+    </div>
+<?php endif ?>

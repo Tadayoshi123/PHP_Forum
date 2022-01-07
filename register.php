@@ -43,7 +43,7 @@
                     <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
                 </div>
                 <div class="clear flex">
-                    <button type="submit" class="signupbtn">Inscription</button>
+                    <button type="submit" class="signupbtn" name="reg_user">Inscription</button>
                     <a href="/php_forum/index.php" class="cancelbtn">Annuler</a>
                 </div>
             </form>
@@ -54,50 +54,57 @@
 
 <?php
 
-$username = $_GET['username'];
-$email = $_GET['email'];
-$psw = $_GET['psw'];
-$psw_repeat = $_GET['psw_repeat'];
+$errors = array();
 
-
-if ($psw==$psw_repeat){
-    
-    
-    try {
-        $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
-
-    // // Ecriture de la requête
-    // $sqlQuery = "INSERT INTO users (UserName,Password,Email,IsAdmin) VALUES ('UserName','Password','Email','IsAdmin')";
-
-    $stmt = $mysqli->prepare('INSERT INTO Users (UserName,Password,Email) VALUES (?, ?, ?)');
-    $stmt->bind_param("sss",$username, $psw, $email);
-    $stmt->execute();
-
-    echo "test";
-    $stmt->close();
-    $mysqli->close();
-
-    // $mysql->query($sql);
-
-    // echo "test";
-    // $mysql->close();
-    
-    // // Préparation
-    // $insert = $mysqli->prepare($sqlQuery);
-    // echo "success";
-    // // Exécution ! La recette est maintenant en base de données
-    // $insert->execute([
-    //     'UserName' => $username,
-    //     'Password' => $email,
-    //     'Email' => $psw,
-    //     'IsAdmin' => false, // 1 = true, 0 = false
-    // ]);
-    
+try {
+    $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+} catch (Exception $e) {
+    die('Erreur : ' . $e->getMessage());
 }
 
+if (isset($_GET['reg_user'])) {
+    $username = mysqli_real_escape_string($mysqli, $_GET['username']);
+    $email = mysqli_real_escape_string($mysqli, $_GET['email']);
+    $psw = mysqli_real_escape_string($mysqli, $_GET['psw']);
+    $psw_repeat = mysqli_real_escape_string($mysqli, $_GET['psw_repeat']);
 
+
+    if ($psw != $psw_repeat) {
+
+        array_push($errors, "The two passwords do not match");
+    }
+    //test if user or email already exist ----------------------------------------------------
+    $query = "SELECT * FROM Users WHERE Email='$email' OR UserName='$username'";
+    $results = mysqli_query($mysqli, $query);
+    echo mysqli_num_rows($results);
+    if (mysqli_num_rows($results) > 0) {
+        array_push($errors, "email or username already exist");
+    }
+
+
+    // Finally, register user if there are no errors in the form
+    if (count($errors) == 0) {
+
+
+        // // Ecriture de la requête
+        // $sqlQuery = "INSERT INTO users (UserName,Password,Email,IsAdmin) VALUES ('UserName','Password','Email','IsAdmin')";
+
+        $stmt = $mysqli->prepare('INSERT INTO Users (UserName,Password,Email) VALUES (?, ?, ?)');
+        $stmt->bind_param("sss", $username, $psw, $email);
+        $stmt->execute();
+
+        echo "inscription réussie";
+        $stmt->close();
+        $mysqli->close();
+    }
+}
 
 ?>
+
+<?php if (count($errors) > 0) : ?>
+    <div class="error">
+        <?php foreach ($errors as $error) : ?>
+            <p><?php echo $error ?></p>
+        <?php endforeach ?>
+    </div>
+<?php endif ?>
