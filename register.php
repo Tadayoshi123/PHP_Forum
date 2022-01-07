@@ -64,7 +64,7 @@ if ($psw==$psw_repeat){
     
     
     try {
-        $mysqli  = new mysqli("localhost", "root", "root", "php_exam_db"); // Connexion à la db "php_exam"
+        $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
     } catch (Exception $e) {
         die('Erreur : ' . $e->getMessage());
     }
@@ -73,7 +73,7 @@ if ($psw==$psw_repeat){
     // $sqlQuery = "INSERT INTO users (UserName,Password,Email,IsAdmin) VALUES ('UserName','Password','Email','IsAdmin')";
 
     $stmt = $mysqli->prepare('INSERT INTO Users (UserName,Password,Email) VALUES (?, ?, ?)');
-    $stmt->bind_param("sss", $username, $email, $psw);
+    $stmt->bind_param("sss",$username, $psw, $email);
     $stmt->execute();
 
     echo "test";
