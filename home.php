@@ -9,7 +9,15 @@
 </head>
 
 <body>
-
+<header>
+        <nav class="navbar">
+            <div class="leftnav">
+                <div id="forum_tittle">
+                    <a href="/php_forum/index.php">Forum</a>
+                </div>
+            </div>
+        </nav>
+    </header>
 </body>
 
 </html>
@@ -28,7 +36,7 @@ if ($mysqli->connect_errno) {
     exit();
 }
 
-$result = $mysqli->query("SELECT * From Articles"); // On utilise l'instance créée pour faire une requête
+$result = $mysqli->query("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
 $nb_articles = mysqli_num_rows($result);
 
 if ($nb_articles == 0) {
@@ -58,9 +66,9 @@ if ($nb_articles == 0) {
             echo htmlentities(trim($data['UserId']));
             echo '</td><td>';
 
-            //TODO details.php
-            // on affiche le titre de l'article, et sur celui-ci, on insère le lien qui nous permettra de voir en détail l'article
-            //echo '<a href="/php_forum/details.php=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
+            //TODO
+            // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
+            echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
 
             echo '</td><td>';
 
