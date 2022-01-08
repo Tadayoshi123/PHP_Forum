@@ -7,23 +7,17 @@ WHERE Users.UserName = 'UserName'
 
 //modification password
 
-UPDATE Users 
-set Password = 'newPassword'
-WHERE UserId = 'UserId'
+UPDATE Users set Password = 'newPassword' WHERE UserId = 'UserId'
 
 //modification Email
 
 
-UPDATE Users 
-set Email = 'Email'
-WHERE UserId = 'UserId'
+UPDATE Users set Email = 'Email' WHERE UserId = 'UserId'
 
 //modification UserName
 
 
-UPDATE Users 
-set UserName = 'UserName'
-WHERE UserId = 'UserId'
+UPDATE Users set UserName = 'UserName' WHERE UserId = 'UserId'
 
 //getPassword
 
