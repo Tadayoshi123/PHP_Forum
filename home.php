@@ -19,16 +19,59 @@
 <?php
 
 
-        $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-        // si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
+$mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+// si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
 
-        // Check connection
-        if ($mysqli->connect_errno) {
-            echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-            exit();
+// Check connection
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+}
+
+$result = $mysqli->query("SELECT * From Articles"); // On utilise l'instance créée pour faire une requête
+$nb_articles = mysqli_num_rows($result);
+
+if ($nb_articles == 0) {
+    echo "No article has been created yet";
+} else {
+?>
+    <table width="500" border="1">
+        <tr>
+            <td>
+                Auteur
+            </td>
+            <td>
+                Titre
+            </td>
+            <td>
+                Date de publication
+            </td>
+        </tr>
+        <?php
+        while ($data = mysqli_fetch_array($result)) {
+
+            // on affiche les résultats
+            echo '<tr>';
+            echo '<td>';
+
+            // on affiche le nom de l'auteur de l'article
+            echo htmlentities(trim($data['UserId']));
+            echo '</td><td>';
+
+            //TODO details.php
+            // on affiche le titre de l'article, et sur celui-ci, on insère le lien qui nous permettra de voir en détail l'article
+            //echo '<a href="/php_forum/details.php=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
+
+            echo '</td><td>';
+
+            // on affiche la date de la dernière réponse de ce sujet
+            echo $data['CreationDate'];
         }
-
-        $result = $mysqli->query("SELECT * From Articles"); // On utilise l'instance créée pour faire une requête
-        echo $result;
-        $mysqli->close();
         ?>
+        </td>
+        </tr>
+    </table>
+<?php
+}
+$mysqli->close();
+?>
