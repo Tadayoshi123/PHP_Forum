@@ -76,7 +76,6 @@ if (isset($_GET['reg_user'])) {
     //test if user or email already exist ----------------------------------------------------
     $query = "SELECT * FROM Users WHERE Email='$email' OR UserName='$username'";
     $results = mysqli_query($mysqli, $query);
-    echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) > 0) {
         array_push($errors, "email or username already exist");
     }
@@ -85,17 +84,17 @@ if (isset($_GET['reg_user'])) {
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
 
-
+        $md5password = md5($psw);//encrypt the password before saving in the database
         // // Ecriture de la requête
-        // $sqlQuery = "INSERT INTO users (UserName,Password,Email,IsAdmin) VALUES ('UserName','Password','Email','IsAdmin')";
 
         $stmt = $mysqli->prepare('INSERT INTO Users (UserName,Password,Email) VALUES (?, ?, ?)');
-        $stmt->bind_param("sss", $username, $psw, $email);
+        $stmt->bind_param("sss", $username, $md5password, $email);
         $stmt->execute();
 
         echo "inscription réussie";
         $stmt->close();
         $mysqli->close();
+        
     }
 }
 

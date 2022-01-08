@@ -43,19 +43,64 @@
                     <br>
                     <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" value="Ecrivez quelque chose ..." required></textarea>
                 </div>
-                </div>
-                <div class="btn-newpost flex">
-                    <div>
-                        <button class="Newpost_submit" type="submit">Soumettre</button>
-                    </div>
-                </div>
-            </form>
         </div>
+        <div class="btn-newpost flex">
+            <div>
+                <button class="Newpost_submit" type="submit" name="addTopic">Soumettre</button>
+            </div>
+        </div>
+        </form>
+    </div>
     </div>
 </body>
+
 <?php
-echo $_GET['Titre_sujet'];
-echo $_GET['message_newpost'];
+
+$errors = array();
+if (isset($_GET['addTopic'])) {
+    if (isset($_COOKIE['UserId'])) {
+
+        try {
+            $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+        } catch (Exception $e) {
+            die('Erreur : ' . $e->getMessage());
+        }
+
+        $title = mysqli_real_escape_string($mysqli, $_GET['Titre_sujet']);
+        $description = mysqli_real_escape_string($mysqli, $_GET['message_newpost']);
+        $creation_date = mysqli_real_escape_string($mysqli, date("Y-m-d H:i:s"));
+        $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+    } else {
+        array_push($errors, "You have to be logged to pos a new Article");
+    }
+
+    
+
+
+    if (count($errors) == 0) {
+
+        // // Ecriture de la requête
+
+        $stmt = $mysqli->prepare('INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES  (?, ?, ?, ?)');
+        $stmt->bind_param("ssss", $title, $description, $creation_date, $user_id);
+        $stmt->execute();
+
+
+        echo "Add successfull";
+        $stmt->close();
+        $mysqli->close();
+        header('location: index.php');
+    }
+}
+
+
+
 ?>
 
-</html>
+<?php if (count($errors) > 0) : ?>
+    <div class="error">
+        <?php foreach ($errors as $error) : ?>
+            <p><?php echo $error ?></p>
+        <?php endforeach ?>
+    </div>
+<?php endif ?>

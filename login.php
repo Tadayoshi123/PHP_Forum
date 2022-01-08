@@ -63,14 +63,18 @@ if (isset($_GET['login_user'])) {
     $email = mysqli_real_escape_string($mysqli, $_GET['user_mail']);
     $password = mysqli_real_escape_string($mysqli, $_GET['user_password']);
 
-    // $password = md5($password);
-    $query = "SELECT * FROM Users WHERE Email='$email' AND Password='$password'";
+    $password = md5($password);
+    $query = "SELECT UserId FROM Users WHERE Email='$email' AND Password='$password'";
     $results = mysqli_query($mysqli, $query);
-    echo mysqli_num_rows($results);
+    // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
 
-        $_SESSION['email'] = $email;
-        $_SESSION['success'] = "You are now logged in";
+        // Numeric array
+        $row = $results->fetch_array(MYSQLI_NUM);
+        // Free result set
+        $results->free_result();
+
+        setcookie('UserId', $row[0]);
         header('location: index.php');
     } else {
         array_push($errors, "Wrong email/password combination");

@@ -44,6 +44,7 @@
 		<a href="/php_forum/connexion_admin.php">Connexion Admin</a>
 		<a href="/php_forum/panel_admin.php">Panel Admin</a>
 	</div>
+	
 </body>
 
 </html>
