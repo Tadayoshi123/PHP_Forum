@@ -31,7 +31,7 @@
         </div>
         <!-- <p class="obligation">{{.Error}}</p> -->
         <div class="NewpostForm flex padding">
-            <form method="GET" enctype="multipart/form-data" id="form">
+            <form method="POST" enctype="multipart/form-data" id="form">
                 <div class="Titre_post">
                     <label for="titre-sujet" id="titre-sujet">Titre du Sujet : </label>
                     <br>
@@ -57,7 +57,7 @@
 <?php
 
 $errors = array();
-if (isset($_GET['addTopic'])) {
+if (isset($_POST['addTopic'])) {
     if (isset($_COOKIE['UserId'])) {
 
         try {
@@ -66,8 +66,8 @@ if (isset($_GET['addTopic'])) {
             die('Erreur : ' . $e->getMessage());
         }
 
-        $title = mysqli_real_escape_string($mysqli, $_GET['Titre_sujet']);
-        $description = mysqli_real_escape_string($mysqli, $_GET['message_newpost']);
+        $title = mysqli_real_escape_string($mysqli, $_POST['Titre_sujet']);
+        $description = mysqli_real_escape_string($mysqli, $_POST['message_newpost']);
         $creation_date = mysqli_real_escape_string($mysqli, date("Y-m-d H:i:s"));
         $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
     } else {

@@ -23,7 +23,7 @@
             <h1>Connexion</h1>
         </div>
         <div class="loginForm padding flex">
-            <form action="" method="GET">
+            <form action="" method="POST">
                 <div id="mail">
                     <br>
                     <label for="mail"> E-mail : </label>
@@ -57,11 +57,11 @@
 
 <?php
 $errors = array();
-if (isset($_GET['login_user'])) {
+if (isset($_POST['login_user'])) {
     $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
 
-    $email = mysqli_real_escape_string($mysqli, $_GET['user_mail']);
-    $password = mysqli_real_escape_string($mysqli, $_GET['user_password']);
+    $email = mysqli_real_escape_string($mysqli, $_POST['user_mail']);
+    $password = mysqli_real_escape_string($mysqli, $_POST['user_password']);
 
     $password = md5($password);
     $query = "SELECT UserId FROM Users WHERE Email='$email' AND Password='$password'";
