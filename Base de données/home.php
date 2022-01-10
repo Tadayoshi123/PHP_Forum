@@ -77,16 +77,19 @@
                 // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
                 echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
 
-                echo '</td><td>';
+            // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
+            echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
 
-                // on affiche la date de la dernière réponse de ce sujet
-                echo $data['CreationDate'];
-            }
-            ?>
-            </td>
-            </tr>
-        </table>
-    <?php
-    }
-    $mysqli->close();
-    ?>
+            echo '</td><td>';
+
+            // on affiche la date de création de l'article
+            echo $data['CreationDate'];
+        }
+        ?>
+        </td>
+        </tr>
+    </table>
+<?php
+}
+$mysqli->close();
+?>

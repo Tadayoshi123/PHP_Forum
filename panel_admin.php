@@ -76,7 +76,7 @@ if (isset($_COOKIE['AdminId'])) : ?>
 
 
                     <td>
-                        <input type="text" id="description" name="Titre_sujet" value="<?php echo htmlentities(trim($data['Description'])); ?>" required>
+                        <input type="text" id="description" name="description" value="<?php echo htmlentities(trim($data['Description'])); ?>" required>
                     <td>
                         <?php echo $data['CreationDate']; ?>
                     <td>
