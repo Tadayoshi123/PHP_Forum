@@ -16,12 +16,12 @@
 <header>
     <nav class="navbar">
         <div id="forum_tittle">
-            <form method="GET">
+            <form method="POST">
                 <a href="/php_forum/index.php">Forum</a>
                 <?php if (isset($_COOKIE['UserId'])) : ?>
                     <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
                     <?php
-                    if (isset($_GET['deconnexion'])) {
+                    if (isset($_POST['deconnexion'])) {
                         setcookie('UserId', '', time() - 3600);
                         header('location: index.php');
                     }
@@ -64,7 +64,7 @@ if (isset($_COOKIE['UserId'])) : ?>
     </div>
 
 
-    <form method="GET">
+    <form method="POST">
         <div class="username">
             <label for="username">change UserName : </label>
             <input type="text" placeholder="UserName" name="username" required>
@@ -74,7 +74,7 @@ if (isset($_COOKIE['UserId'])) : ?>
         </div>
     </form>
 
-    <form method="GET">
+    <form method="POST">
         <div class="email">
             <label for="email"> change Email : </label>
             <input type="text" placeholder="Email" name="email" required>
@@ -83,7 +83,7 @@ if (isset($_COOKIE['UserId'])) : ?>
             <button type="submit" class="signupbtn" name="new_email">Change Email</button>
         </div>
     </form>
-    <form method="GET">
+    <form method="POST">
         <div class="password">
             <label for="password">change Password : </label>
             <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
@@ -110,8 +110,8 @@ if (isset($_COOKIE['UserId'])) : ?>
         die('Erreur : ' . $e->getMessage());
     }
 
-    if (isset($_GET['new_user_name'])) {
-        $username = mysqli_real_escape_string($mysqli, $_GET['username']);
+    if (isset($_POST['new_user_name'])) {
+        $username = mysqli_real_escape_string($mysqli, $_POST['username']);
         $query = "SELECT * FROM Users WHERE UserName='$username'";
         $results = mysqli_query($mysqli, $query);
         if (mysqli_num_rows($results) > 0) {
@@ -125,8 +125,8 @@ if (isset($_COOKIE['UserId'])) : ?>
         }
     }
 
-    if (isset($_GET['new_email'])) {
-        $email = mysqli_real_escape_string($mysqli, $_GET['email']);
+    if (isset($_POST['new_email'])) {
+        $email = mysqli_real_escape_string($mysqli, $_POST['email']);
         $query = "SELECT * FROM Users WHERE Email='$email'";
         $results = mysqli_query($mysqli, $query);
         if (mysqli_num_rows($results) > 0) {
@@ -139,9 +139,9 @@ if (isset($_COOKIE['UserId'])) : ?>
         }
     }
 
-    if (isset($_GET['new_password'])) {
-        $psw = mysqli_real_escape_string($mysqli, $_GET['psw']);
-        $psw_repeat = mysqli_real_escape_string($mysqli, $_GET['psw_repeat']);
+    if (isset($_POST['new_password'])) {
+        $psw = mysqli_real_escape_string($mysqli, $_POST['psw']);
+        $psw_repeat = mysqli_real_escape_string($mysqli, $_POST['psw_repeat']);
         if ($psw != $psw_repeat) {
 
             array_push($errors, "The two passwords do not match");

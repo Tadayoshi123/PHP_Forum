@@ -25,7 +25,7 @@
         <p class="obligation">Remplissez ce formulaire d'adhésion</p>
         <br>
         <div class="RegisterForm flex padding">
-            <form method="GET">
+            <form method="POST">
                 <div class="username">
                     <label for="username"> Pseudo : </label>
                     <input type="text" placeholder="Entrez un Pseudo" name="username" required>
@@ -62,11 +62,11 @@ try {
     die('Erreur : ' . $e->getMessage());
 }
 
-if (isset($_GET['reg_user'])) {
-    $username = mysqli_real_escape_string($mysqli, $_GET['username']);
-    $email = mysqli_real_escape_string($mysqli, $_GET['email']);
-    $psw = mysqli_real_escape_string($mysqli, $_GET['psw']);
-    $psw_repeat = mysqli_real_escape_string($mysqli, $_GET['psw_repeat']);
+if (isset($_POST['reg_user'])) {
+    $username = mysqli_real_escape_string($mysqli, $_POST['username']);
+    $email = mysqli_real_escape_string($mysqli, $_POST['email']);
+    $psw = mysqli_real_escape_string($mysqli, $_POST['psw']);
+    $psw_repeat = mysqli_real_escape_string($mysqli, $_POST['psw_repeat']);
 
 
     if ($psw != $psw_repeat) {
