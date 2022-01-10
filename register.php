@@ -84,11 +84,13 @@ if (isset($_POST['reg_user'])) {
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
 
-        $md5password = md5($psw);//encrypt the password before saving in the database
+        $md5password = md5($psw); //encrypt the password before saving in the database
+        
+        $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
         // // Ecriture de la requête
 
         $stmt = $mysqli->prepare('INSERT INTO Users (UserName,Password,Email) VALUES (?, ?, ?)');
-        $stmt->bind_param("sss", $username, $md5password, $email);
+        $stmt->bind_param("sss", $username, $bcryptpassword, $email);
         $stmt->execute();
 
         echo "inscription réussie";

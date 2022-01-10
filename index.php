@@ -41,7 +41,7 @@
 		<a href="/php_forum/details.php">Details</a>
 		<a href="/php_forum/edit.php">Edit</a>
 		<a href="/php_forum/account.php">Account</a>
-		<a href="/php_forum/connexion_admin.php">Connexion Admin</a>
+		<a href="/php_forum/login_admin.php">Connexion Admin</a>
 		<a href="/php_forum/panel_admin.php">Panel Admin</a>
 	</div>
 	

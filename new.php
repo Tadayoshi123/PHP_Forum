@@ -18,10 +18,20 @@
 <body>
     <header>
         <nav class="navbar">
-            <div class="leftnav">
-                <div id="forum_tittle">
+            <div id="forum_tittle">
+                <form method="POST">
                     <a href="/php_forum/index.php">Forum</a>
-                </div>
+                    <?php if (isset($_COOKIE['UserId'])) : ?>
+                        <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
+                        <?php
+                        if (isset($_POST['deconnexion'])) {
+                            setcookie('UserId', '', time() - 3600);
+                            setcookie('AdminId', '', time() - 3600);
+                            header('location: index.php');
+                        }
+                        ?>
+                    <?php endif ?>
+                </form>
             </div>
         </nav>
     </header>
@@ -74,7 +84,7 @@ if (isset($_POST['addTopic'])) {
         array_push($errors, "You have to be logged to pos a new Article");
     }
 
-    
+
 
 
     if (count($errors) == 0) {

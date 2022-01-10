@@ -23,6 +23,7 @@
                     <?php
                     if (isset($_POST['deconnexion'])) {
                         setcookie('UserId', '', time() - 3600);
+                        setcookie('AdminId', '', time() - 3600);
                         header('location: index.php');
                     }
                     ?>
@@ -32,7 +33,7 @@
     </nav>
 </header>
 <?php $errors = array();
-if (isset($_COOKIE['UserId'])) : ?>
+if (isset($_COOKIE['UserId']) ) : ?>
     <?php
 
     $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"

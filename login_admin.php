@@ -26,29 +26,19 @@
             <form action="" method="POST">
                 <div id="mail">
                     <br>
-                    <label for="mail"> E-mail : </label>
+                    <label for="admin"> Admin Name : </label>
                     <br>
-                    <input type="email" id="mail" name="user_mail" required>
+                    <input id="admin" name="admin_name" required>
                 </div>
                 <div id="mdp">
                     <label for="password"> Mot de passe : </label>
                     <br>
-                    <input type="password" id="password" name="user_password" required>
+                    <input type="password" id="password" name="admin_password" required>
                 </div>
                 <div class="btnLogin flex">
-                    <button class="LOGIN" type="submit" name="login_user">Connexion</button>
+                    <button class="LOGIN" type="submit" name="admin_login">Connexion</button>
                 </div>
             </form>
-        </div>
-        <div class="otherLogin padding flex">
-            <div class="O-inscription">
-                <p>Vous n'avez pas de compte ?</p>
-                <p>Incrivez-vous ici</p>
-                <br>
-                <div class="flex">
-                    <a class="REGISTER" href="/php_forum/register.php">Inscription</a>
-                </div>
-            </div>
         </div>
     </div>
 </body>
@@ -57,34 +47,28 @@
 
 <?php
 $errors = array();
-if (isset($_POST['login_user'])) {
+if (isset($_POST['admin_login'])) {
     $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
 
-    $email = mysqli_real_escape_string($mysqli, $_POST['user_mail']);
-    $password = mysqli_real_escape_string($mysqli, $_POST['user_password']);
+    $admin_name = mysqli_real_escape_string($mysqli, $_POST['admin_name']);
+    $password = mysqli_real_escape_string($mysqli, $_POST['admin_password']);
 
     $md5password = md5($password);
-    
-    $bcryptpassword = password_hash($password, PASSWORD_BCRYPT);
+    $bcryptpassword = password_hash($md5password, PASSWORD_BCRYPT);
 
-    $query = "SELECT UserId, Password FROM Users WHERE Email='$email'";
+    $query = "SELECT AdminId FROM Admin WHERE AdminName='$admin_name' AND Password='$password'";
     $results = mysqli_query($mysqli, $query);
     // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
-        
 
         // Numeric array
         $row = $results->fetch_array(MYSQLI_NUM);
         // Free result set
         $results->free_result();
-        if (password_verify($password, $row[1])) {
 
-            setcookie('UserId', $row[0]);
-            setcookie('AdminId', '', time() - 3600);
-            header('location: index.php');
-        } else {
-            array_push($errors, "Wrong email/password combination");
-        }
+        setcookie('AdminId', $row[0]);
+        setcookie('UserId', '', time() - 3600);
+        header('location: index.php');
     } else {
         array_push($errors, "Wrong email/password combination");
     }

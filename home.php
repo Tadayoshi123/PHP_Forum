@@ -9,77 +9,84 @@
 </head>
 
 <body>
-<header>
+    <header>
         <nav class="navbar">
-            <div class="leftnav">
-                <div id="forum_tittle">
+            <div id="forum_tittle">
+                <form method="POST">
                     <a href="/php_forum/index.php">Forum</a>
-                </div>
+                    <?php if (isset($_COOKIE['UserId'])) : ?>
+                        <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
+                        <?php
+                        if (isset($_POST['deconnexion'])) {
+                            setcookie('UserId', '', time() - 3600);
+                            setcookie('AdminId', '', time() - 3600);
+                            header('location: index.php');
+                        }
+                        ?>
+                    <?php endif ?>
+                </form>
             </div>
         </nav>
     </header>
-</body>
-
-</html>
 
 
 
-<?php
+    <?php
 
 
-$mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-// si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
+    $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+    // si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
 
-// Check connection
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-    exit();
-}
+    // Check connection
+    if ($mysqli->connect_errno) {
+        echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+        exit();
+    }
 
-$result = $mysqli->query("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
-$nb_articles = mysqli_num_rows($result);
+    $result = $mysqli->query("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
+    $nb_articles = mysqli_num_rows($result);
 
-if ($nb_articles == 0) {
-    echo "No article has been created yet";
-} else {
-?>
-    <table width="500" border="1">
-        <tr>
-            <td>
-                Auteur
+    if ($nb_articles == 0) {
+        echo "No article has been created yet";
+    } else {
+    ?>
+        <table width="500" border="1">
+            <tr>
+                <td>
+                    Auteur
+                </td>
+                <td>
+                    Titre
+                </td>
+                <td>
+                    Date de publication
+                </td>
+            </tr>
+            <?php
+            while ($data = mysqli_fetch_array($result)) {
+
+                // on affiche les résultats
+                echo '<tr>';
+                echo '<td>';
+
+                // on affiche le nom de l'auteur de l'article
+                echo htmlentities(trim($data['UserId']));
+                echo '</td><td>';
+
+                //TODO
+                // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
+                echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
+
+                echo '</td><td>';
+
+                // on affiche la date de la dernière réponse de ce sujet
+                echo $data['CreationDate'];
+            }
+            ?>
             </td>
-            <td>
-                Titre
-            </td>
-            <td>
-                Date de publication
-            </td>
-        </tr>
-        <?php
-        while ($data = mysqli_fetch_array($result)) {
-
-            // on affiche les résultats
-            echo '<tr>';
-            echo '<td>';
-
-            // on affiche le nom de l'auteur de l'article
-            echo htmlentities(trim($data['UserId']));
-            echo '</td><td>';
-
-            //TODO
-            // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
-            echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
-
-            echo '</td><td>';
-
-            // on affiche la date de la dernière réponse de ce sujet
-            echo $data['CreationDate'];
-        }
-        ?>
-        </td>
-        </tr>
-    </table>
-<?php
-}
-$mysqli->close();
-?>
+            </tr>
+        </table>
+    <?php
+    }
+    $mysqli->close();
+    ?>

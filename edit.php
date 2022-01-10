@@ -16,7 +16,7 @@
 </head>
 
 <?php $errors = array();
-if (isset($_COOKIE['UserId'])) {
+if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     if (isset($_GET['ArticleId'])) {
         $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
 
@@ -48,10 +48,20 @@ if (isset($_COOKIE['UserId'])) {
     <body>
         <header>
             <nav class="navbar">
-                <div class="leftnav">
-                    <div id="forum_tittle">
+                <div id="forum_tittle">
+                    <form method="POST">
                         <a href="/php_forum/index.php">Forum</a>
-                    </div>
+                        <?php if (isset($_COOKIE['UserId'])) : ?>
+                            <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
+                            <?php
+                            if (isset($_POST['deconnexion'])) {
+                                setcookie('UserId', '', time() - 3600);
+                                setcookie('AdminId', '', time() - 3600);
+                                header('location: index.php');
+                            }
+                            ?>
+                        <?php endif ?>
+                    </form>
                 </div>
             </nav>
         </header>
@@ -71,15 +81,15 @@ if (isset($_COOKIE['UserId'])) {
                     <div class=" text_area">
                         <label for="message">Message : </label>
                         <br>
-                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10"  required><?php echo $row[2]; ?></textarea>
+                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" required><?php echo $row[2]; ?></textarea>
                     </div>
-                    </div>
-                    <div class="btn-newpost flex">
-                        <div>
-                            <button class="Newpost_submit" type="submit" name="addTopic">Soumettre</button>
-                        </div>
-                    </div>
-                </form>
+            </div>
+            <div class="btn-newpost flex">
+                <div>
+                    <button class="Newpost_submit" type="submit" name="addTopic">Soumettre</button>
+                </div>
+            </div>
+            </form>
         </div>
         </div>
     </body>
@@ -106,7 +116,7 @@ if (isset($_COOKIE['UserId'])) {
         echo "Add successfull";
         $stmt->close();
         $mysqli->close();
-        header('location: edit.php?ArticleId='.$article_id);
+        header('location: edit.php?ArticleId=' . $article_id);
     }
     ?>
 
