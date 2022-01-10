@@ -86,7 +86,7 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
             </div>
             <div class="btn-newpost flex">
                 <div>
-                    <button class="Newpost_submit" type="submit" name="addTopic">Soumettre</button>
+                    <button class="Newpost_submit" type="submit" name="editTopic">Soumettre</button>
                 </div>
             </div>
             </form>
@@ -95,7 +95,7 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     </body>
 
     <?php
-    if (isset($_POST['addTopic'])) {
+    if (isset($_POST['editTopic'])) {
 
 
         try {
