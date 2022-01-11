@@ -33,19 +33,24 @@ if ($mysqli->connect_errno) {
     echo "Failed to connect to MySQL: " . $mysqli->connect_error;
     exit();
 }
-$result = $mysqli->query("SELECT Title, Description, CreationDate FROM Articles INNER JOIN Users ON Articles.UserId = Articles.UserId WHERE Articles.ArticleId =" . $_GET['ArticleId']); // On utilise l'instance créée pour faire une requête
-
 if (!isset($_GET['ArticleId'])) {
     echo 'Article does not exist';
 } else {
+
+$query = "SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "; // On utilise l'instance créée pour faire une requête
+$results = mysqli_query($mysqli, $query);
+
 ?>
     <table width="500" border="1">
         <tr>
             <td>
-                Auteur
+                Title
             </td>
             <td>
                 Description
+            </td>
+            <td>
+                Auteur
             </td>
             <td>
                 Date de création
@@ -53,25 +58,25 @@ if (!isset($_GET['ArticleId'])) {
         </tr>
         <?php
 
-        while ($data = mysqli_fetch_array($result)) {
+        while ($data = mysqli_fetch_array($results)) {
+            if ($data['ArticleId'] == $_GET['ArticleId']){
 
-            // on affiche le titre du sujet
-            echo '<h1>', htmlentities(trim($data['Title'])), '</h1>';
+                echo "<td>";
+                // on affiche le nom de l'auteur de l'article
+                echo nl2br(htmlentities(trim($data['UserName'])));
+                echo '</td><td>';
+                // on affiche le titre du sujet
+                echo '<h1>', htmlentities(trim($data['Title'])), '</h1>';
+                echo '</td><td>';
 
-            // on affiche le résultat
-            echo '<tr>';
-            echo '<td>';
-
-            // on affiche le nom de l'auteur de l'article
-            echo htmlentities(trim($data['UserName']));
-            echo '</td><td>';
-
-            // on affiche la description de l'article
-            echo nl2br(htmlentities(trim($data['Description'])));
-            echo '</td><td>';
-
-            // on affiche la date de création de l'article
-            echo $data['CreationDate'];
+                // on affiche la description de l'article
+                echo htmlentities(trim($data['Description']));
+                echo '</td><td>';
+                
+                // on affiche la date de création de l'article
+                echo $data['CreationDate'];
+                echo '</td></tr>';
+            }
         }
         ?>
         </td>
