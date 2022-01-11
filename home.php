@@ -43,7 +43,7 @@
         exit();
     }
 
-    $result = $mysqli->query("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
+    $result = $mysqli->query("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles == 0) {
@@ -70,7 +70,7 @@
                 echo '<td>';
 
                 // on affiche le nom de l'auteur de l'article
-                echo htmlentities(trim($data['UserId']));
+                echo htmlentities(trim($data['UserName']));
                 echo '</td><td>';
 
                 //TODO
