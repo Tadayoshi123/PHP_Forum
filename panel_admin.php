@@ -64,23 +64,19 @@ if (isset($_COOKIE['AdminId'])) : ?>
                     Date de publication
                 </td>
             </tr>
-            <?php
-            while ($data = mysqli_fetch_array($result)) {
-
-                // on affiche les résultats
-            ?>
+            <?php while ($data = mysqli_fetch_array($result)) { ?>
                 <tr>
                     <td>
                         <form method="POST" enctype="multipart/form-data" id="form">
                             <input type="text" id="Titret" name="Titre" value="<?php echo  htmlentities(trim($data['Title'])); ?>" required>
-
-
                     <td>
                         <input type="text" id="description" name="description" value="<?php echo htmlentities(trim($data['Description'])); ?>" required>
                     <td>
                         <?php echo $data['CreationDate']; ?>
                     <td>
-                        <button class="Newpost_submit" type="submit" name="addTopic">Edit Article</button>
+                        <button class="Newpost_submit" type="submit" name="editTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Edit Article</button>
+                    <td>
+                        <button class="Newpost_submit" type="submit" name="deleteTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Delete Article</button>
                         </form>
                     <?php } ?>
                     </td>
@@ -88,6 +84,23 @@ if (isset($_COOKIE['AdminId'])) : ?>
         </table>
 
         <?php
+        if (isset($_POST['deleteTopic'])) {
+
+            try {
+                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+            $article_id = mysqli_real_escape_string($mysqli, $_POST['deleteTopic']);
+            $stmt = $mysqli->prepare("DELETE FROM Articles WHERE ArticleId = '$article_id'");
+            $stmt->execute();
+
+
+            echo "Delete successfull";
+            header('location: panel_admin.php');
+            $stmt->close();
+            $mysqli->close();
+        }
         if (isset($_POST['editTopic'])) {
 
 
@@ -98,22 +111,18 @@ if (isset($_COOKIE['AdminId'])) : ?>
             }
 
             $title = mysqli_real_escape_string($mysqli, $_POST['Titre']);
-            $description = mysqli_real_escape_string($mysqli, $_POST['message_newpost']);
-            $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-            $article_id = mysqli_real_escape_string($mysqli, $_GET['ArticleId']);
+            $description = mysqli_real_escape_string($mysqli, $_POST['description']);
+            $article_id = mysqli_real_escape_string($mysqli, $_POST['editTopic']);
 
             $stmt = $mysqli->prepare("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
             $stmt->execute();
 
 
-            echo "Add successfull";
+            echo "Edit successfull";
+            header('location: panel_admin.php');
             $stmt->close();
             $mysqli->close();
-            header('location: edit.php?ArticleId=' . $article_id);
         }
-        ?>
-
-    <?php
     }
 
     $result = $mysqli->query("SELECT * From Users"); // On utilise l'instance créée pour faire une requête
@@ -122,43 +131,78 @@ if (isset($_COOKIE['AdminId'])) : ?>
     if ($nb_users == 0) {
         echo "No users has been created yet";
     } else {
-    ?>
+        ?>
         <table width="500" border="1">
             <tr>
                 <td>
-                    Name
+                    UserName
                 </td>
                 <td>
                     Email
                 </td>
-
             </tr>
-            <?php
-            while ($data = mysqli_fetch_array($result)) {
-
-                // on affiche les résultats
-                echo '<tr>';
-                echo '<td>';
-
-                echo '<a href="/php_forum/edit.php?ArticleId=', $data['UserId'], '">', htmlentities(trim($data['UserName'])), '</a>';
-                echo '</td><td>';
-
-                // on affiche le nom de l'auteur de l'article
-                echo htmlentities(trim($data['Email']));
-                echo '</td>';
-            }
-            ?>
-            </tr>
+            <?php while ($data = mysqli_fetch_array($result)){ ?>
+                <tr>
+                    <td>
+                        <form method="POST" enctype="multipart/form-data" id="form">
+                            <input type="text" id="user_name" name="user_name" value="<?php echo htmlentities(trim($data['UserName'])); ?>" required>
+                    <td>
+                        <input type="text" id="email" name="email" value="<?php echo htmlentities(trim($data['Email'])); ?>" required>
+                    <td>
+                        <button class="Newpost_submit" type="submit" name="edit_user" value="<?php echo htmlentities(trim($data['UserId'])); ?>">Edit User</button>
+                    <td>
+                        <button class="Newpost_submit" type="submit" name="delete_user" value="<?php echo htmlentities(trim($data['UserId'])); ?>">Delete User</button>
+                        </form>
+                    <?php } ?>
+                    </td>
+                </tr>
         </table>
 
     <?php
+        if (isset($_POST['delete_user'])) {
+
+            try {
+                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+            $user_id = mysqli_real_escape_string($mysqli, $_POST['delete_user']);
+            $stmt = $mysqli->prepare("DELETE FROM Users WHERE UserId = '$user_id'");
+            $stmt->execute();
+
+
+            echo "Delete successfull";
+            header('location: panel_admin.php');
+            $stmt->close();
+            $mysqli->close();
+        }
+        if (isset($_POST['edit_user'])) {
+
+
+            try {
+                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+
+            // $user_id = ;
+            $user_name = mysqli_real_escape_string($mysqli, $_POST['user_name']);
+
+            $email = mysqli_real_escape_string($mysqli, $_POST['email']);
+
+            $user_id = mysqli_real_escape_string($mysqli, $_POST['edit_user']);
+
+            $stmt = $mysqli->prepare("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
+            $stmt->execute();
+
+
+            echo "Add successfull";
+            header('location: panel_admin.php');
+            $stmt->close();
+            $mysqli->close();
+        }
     }
-
-    $mysqli->close();
-
-
     ?>
-
 
 
 <?php else : ?>

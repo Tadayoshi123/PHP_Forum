@@ -91,8 +91,7 @@ if (isset($_POST['addTopic'])) {
 
         // // Ecriture de la requête
 
-        $stmt = $mysqli->prepare('INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES  (?, ?, ?, ?)');
-        $stmt->bind_param("ssss", $title, $description, $creation_date, $user_id);
+        $stmt = $mysqli->prepare('INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES  ($title, $description, $creation_date, $user_id)');
         $stmt->execute();
 
 

@@ -175,33 +175,40 @@ if (isset($_COOKIE['UserId']) ) : ?>
                     Date de publication
                 </td>
             </tr>
-            <?php
-            while ($data = mysqli_fetch_array($result)) {
-
-                // on affiche les résultats
-                echo '<tr>';
-                echo '<td>';
-
-                echo '<a href="/php_forum/edit.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
-                echo '</td><td>';
-
-                // on affiche le nom de l'auteur de l'article
-                echo htmlentities(trim($data['Description']));
-                echo '</td><td>';
-
-                //TODO
-                // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
-
-
-                // on affiche la date de la dernière réponse de ce sujet
-                echo $data['CreationDate'];
-            }
-            ?>
-            </td>
-            </tr>
+            <?php while ($data = mysqli_fetch_array($result)) { ?>
+                <tr>
+                    <td>
+                        <form method="POST" enctype="multipart/form-data" id="form">
+                            <?php echo  htmlentities(trim($data['Title'])); ?>
+                    <td>
+                        <?php echo htmlentities(trim($data['Description'])); ?>
+                    <td>
+                        <?php echo $data['CreationDate']; ?>
+                    <td>
+                        <button class="Newpost_submit" type="submit" name="deleteTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Delete Article</button>
+                        </form>
+                    <?php } ?>
+                    </td>
+                </tr>
         </table>
-
     <?php
+        if (isset($_POST['deleteTopic'])) {
+
+            try {
+                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+            } catch (Exception $e) {
+                die('Erreur : ' . $e->getMessage());
+            }
+            $article_id = mysqli_real_escape_string($mysqli, $_POST['deleteTopic']);
+            $stmt = $mysqli->prepare("DELETE FROM Articles WHERE ArticleId = '$article_id'");
+            $stmt->execute();
+
+
+            echo "Delete successfull";
+            header('location: account.php');
+            $stmt->close();
+            $mysqli->close();
+        }
     }
 
     $mysqli->close();
