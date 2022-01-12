@@ -33,7 +33,7 @@
     </nav>
 </header>
 <?php $errors = array();
-if (isset($_COOKIE['UserId']) ) : ?>
+if (isset($_COOKIE['UserId'])) : ?>
     <?php
 
     $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
@@ -191,7 +191,7 @@ if (isset($_COOKIE['UserId']) ) : ?>
                     </td>
                 </tr>
         </table>
-    <?php
+        <?php
         if (isset($_POST['deleteTopic'])) {
 
             try {
@@ -211,9 +211,100 @@ if (isset($_COOKIE['UserId']) ) : ?>
         }
     }
 
+
+    $result = $mysqli->query("SELECT Title, Description, CreationDate , Favourites.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.UserId = Users.UserId"); // On utilise l'instance créée pour faire une requête
+    $nb_articles = mysqli_num_rows($result);
+
+    if ($nb_articles != 0) {
+        
+        ?>
+        <div>Favourite articles</div>
+        <table width="500" border="1">
+            <tr>
+                <td>
+                    Auteur
+                </td>
+                <td>
+                    Titre
+                </td>
+                <td>
+                    Date de publication
+                </td>
+            </tr>
+            <?php
+            while ($data = mysqli_fetch_array($result)) {
+
+                // on affiche les résultats
+                echo '<tr>';
+                echo '<td>';
+
+                // on affiche le nom de l'auteur de l'article
+                echo htmlentities(trim($data['UserName']));
+                echo '</td><td>';
+
+                // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
+                echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
+
+                // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
+                echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
+
+                echo '</td><td>';
+
+                // on affiche la date de création de l'article
+                echo $data['CreationDate'];
+
+
+                if (isset($_COOKIE['UserId'])) {
+
+                    echo '</td><td>';
+                    $article_id = mysqli_real_escape_string($mysqli, $data['ArticleId']);
+                    $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+
+                    $query = "SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'";
+                    $Favourite = mysqli_query($mysqli, $query);
+                    if (mysqli_num_rows($Favourite) == 0) {
+
+            ?>
+                        <form method="POST" enctype="multipart/form-data" id="form">
+                            <button type="submit" name="addFav" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Add Favourite</button>
+                        </form>
+                        <?php
+
+                        if (isset($_POST['addFav'])) {
+
+                            $article_id = mysqli_real_escape_string($mysqli, $_POST['addFav']);
+                            $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+                            $stmt = $mysqli->prepare("INSERT INTO Favourites (UserId,ArticleId) VALUES  ($user_id, $article_id)");
+                            $stmt->execute();
+                            $stmt->close();
+                            header('location: account.php');
+                        }
+                    } else {
+                        while ($data = mysqli_fetch_array($Favourite)) {
+                        ?>
+                            <form method="POST" enctype="multipart/form-data" id="form">
+
+                                <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
+                            </form>
+            <?php
+                            if (isset($_POST['delFav'])) {
+                                $favourite_id = mysqli_real_escape_string($mysqli, $_POST['delFav']);
+                                $stmt = $mysqli->prepare("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
+                                $stmt->execute();
+                                $stmt->close();
+                                header('location: account.php');
+                            }
+                        }
+                    }
+                }
+            }
+            ?>
+            </td>
+            </tr>
+        </table>
+    <?php
+    }
     $mysqli->close();
-
-
     ?>
 
 
