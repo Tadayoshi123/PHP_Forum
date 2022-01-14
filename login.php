@@ -63,23 +63,21 @@ if (isset($_POST['login_user'])) {
     $email = mysqli_real_escape_string($mysqli, $_POST['user_mail']);
     $password = mysqli_real_escape_string($mysqli, $_POST['user_password']);
 
-    $md5password = md5($password);
+    // $md5password = md5($password);
     
     $bcryptpassword = password_hash($password, PASSWORD_BCRYPT);
 
-    $query = "SELECT UserId, Password FROM Users WHERE Email='$email'";
-    $results = mysqli_query($mysqli, $query);
+    $results = $mysqli->query("SELECT UserId, Password FROM Users WHERE Email='$email'");
     // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
-        
+
 
         // Numeric array
-        $row = $results->fetch_array(MYSQLI_NUM);
-        // Free result set
-        $results->free_result();
-        if (password_verify($password, $row[1])) {
+        $data = mysqli_fetch_array($results);
+        
+        if (password_verify($password, $data['Password'])) {
 
-            setcookie('UserId', $row[0]);
+            setcookie('UserId', $data['UserId']);
             setcookie('AdminId', '', time() - 3600);
             header('location: index.php');
         } else {

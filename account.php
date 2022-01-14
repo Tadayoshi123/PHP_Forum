@@ -40,13 +40,13 @@ if (isset($_COOKIE['UserId'])) : ?>
 
     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
 
-    $query = "SELECT * FROM Users WHERE UserId='$user_id'";
-    $results = mysqli_query($mysqli, $query);
+    $results = $mysqli->query("SELECT * FROM Users WHERE UserId='$user_id'");
     // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
 
         // Numeric array
-        $row = $results->fetch_array(MYSQLI_NUM);
+        // $row = $results->fetch_array(MYSQLI_NUM);
+        $data = mysqli_fetch_array($results);
         // Free result set
         $results->free_result();
     } else {
@@ -58,10 +58,10 @@ if (isset($_COOKIE['UserId'])) : ?>
 
 
     <div>
-        Actual UserName: <?php echo $row[1]; ?>
+        Actual UserName: <?php echo trim($data['UserName']); ?>
     </div>
     <div>
-        Actual Email: <?php echo $row[3]; ?>
+        Actual Email: <?php echo trim($data['Email']); ?>
     </div>
 
 
@@ -128,8 +128,7 @@ if (isset($_COOKIE['UserId'])) : ?>
 
     if (isset($_POST['new_email'])) {
         $email = mysqli_real_escape_string($mysqli, $_POST['email']);
-        $query = "SELECT * FROM Users WHERE Email='$email'";
-        $results = mysqli_query($mysqli, $query);
+        $results = $mysqli->query("SELECT * FROM Users WHERE Email='$email'");
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "email already exist");
         } else {
@@ -260,8 +259,7 @@ if (isset($_COOKIE['UserId'])) : ?>
                     $article_id = mysqli_real_escape_string($mysqli, $data['ArticleId']);
                     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
 
-                    $query = "SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'";
-                    $Favourite = mysqli_query($mysqli, $query);
+                    $Favourite = $mysqli->query("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
                     if (mysqli_num_rows($Favourite) == 0) {
 
             ?>
@@ -274,7 +272,7 @@ if (isset($_COOKIE['UserId'])) : ?>
 
                             $article_id = mysqli_real_escape_string($mysqli, $_POST['addFav']);
                             $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-                            $stmt = $mysqli->prepare("INSERT INTO Favourites (UserId,ArticleId) VALUES  ($user_id, $article_id)");
+                            $stmt = $mysqli->prepare("INSERT INTO Favourites (UserId,ArticleId) VALUES ($user_id, $article_id)");
                             $stmt->execute();
                             $stmt->close();
                             header('location: account.php');

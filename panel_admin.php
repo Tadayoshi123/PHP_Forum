@@ -141,7 +141,7 @@ if (isset($_COOKIE['AdminId'])) : ?>
                     Email
                 </td>
             </tr>
-            <?php while ($data = mysqli_fetch_array($result)){ ?>
+            <?php while ($data = mysqli_fetch_array($result)) { ?>
                 <tr>
                     <td>
                         <form method="POST" enctype="multipart/form-data" id="form">

@@ -11,10 +11,20 @@
 <body>
     <header>
         <nav class="navbar">
-            <div class="leftnav">
-                <div id="forum_tittle">
+            <div id="forum_tittle">
+                <form method="POST">
                     <a href="/php_forum/index.php">Forum</a>
-                </div>
+                    <?php if (isset($_COOKIE['UserId'])) : ?>
+                        <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
+                        <?php
+                        if (isset($_POST['deconnexion'])) {
+                            setcookie('UserId', '', time() - 3600);
+                            setcookie('AdminId', '', time() - 3600);
+                            header('location: index.php');
+                        }
+                        ?>
+                    <?php endif ?>
+                </form>
             </div>
         </nav>
     </header>
@@ -22,6 +32,8 @@
 </body>
 
 </html>
+
+
 
 <?php
 
@@ -37,8 +49,7 @@ if (!isset($_GET['ArticleId'])) {
     echo 'Article does not exist';
 } else {
 
-$query = "SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "; // On utilise l'instance créée pour faire une requête
-$results = mysqli_query($mysqli, $query);
+    $results = $mysqli->query("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
 
 ?>
     <table width="500" border="1">
@@ -59,7 +70,7 @@ $results = mysqli_query($mysqli, $query);
         <?php
 
         while ($data = mysqli_fetch_array($results)) {
-            if ($data['ArticleId'] == $_GET['ArticleId']){
+            if ($data['ArticleId'] == $_GET['ArticleId']) {
 
                 echo "<td>";
                 // on affiche le nom de l'auteur de l'article
@@ -72,7 +83,7 @@ $results = mysqli_query($mysqli, $query);
                 // on affiche la description de l'article
                 echo htmlentities(trim($data['Description']));
                 echo '</td><td>';
-                
+
                 // on affiche la date de création de l'article
                 echo $data['CreationDate'];
                 echo '</td></tr>';

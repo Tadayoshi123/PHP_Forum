@@ -15,6 +15,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap" rel="stylesheet">
 </head>
 
+<header>
+    <nav class="navbar">
+        <div id="forum_tittle">
+            <form method="POST">
+                <a href="/php_forum/index.php">Forum</a>
+                <?php if (isset($_COOKIE['UserId'])) : ?>
+                    <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
+                    <?php
+                    if (isset($_POST['deconnexion'])) {
+                        setcookie('UserId', '', time() - 3600);
+                        setcookie('AdminId', '', time() - 3600);
+                        header('location: index.php');
+                    }
+                    ?>
+                <?php endif ?>
+            </form>
+        </div>
+    </nav>
+</header>
+
 <?php $errors = array();
 if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     if (isset($_GET['ArticleId'])) {
@@ -23,15 +43,11 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
         $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
         $article_id = mysqli_real_escape_string($mysqli, $_GET['ArticleId']);
 
-        $query = "SELECT * FROM Articles WHERE UserId='$user_id' AND ArticleId = '$article_id'";
-        $results = mysqli_query($mysqli, $query);
+        $results = $mysqli->query("SELECT * FROM Articles WHERE UserId='$user_id' AND ArticleId = '$article_id'");
         // echo mysqli_num_rows($results);
         if (mysqli_num_rows($results) == 1) {
 
-            // Numeric array
-            $row = $results->fetch_array(MYSQLI_NUM);
-            // Free result set
-            $results->free_result();
+            $data = mysqli_fetch_array($result);
         } else {
             array_push($errors, "You can't edit this article");
         }
@@ -75,13 +91,13 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
                     <div class="Titre_post">
                         <label for="titre-sujet" id="titre-sujet">Titre du Sujet : </label>
                         <br>
-                        <input type="text" id="Titre_sujet" name="Titre_sujet" value="<?php echo $row[1]; ?>" required>
+                        <input type="text" id="Titre_sujet" name="Titre_sujet" value="<?php echo $data['Title']; ?>" required>
                         <br>
                     </div>
                     <div class=" text_area">
                         <label for="message">Message : </label>
                         <br>
-                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" required><?php echo $row[2]; ?></textarea>
+                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" required><?php echo $data['Description']; ?></textarea>
                     </div>
             </div>
             <div class="btn-newpost flex">

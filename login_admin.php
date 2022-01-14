@@ -53,22 +53,23 @@ if (isset($_POST['admin_login'])) {
     $admin_name = mysqli_real_escape_string($mysqli, $_POST['admin_name']);
     $password = mysqli_real_escape_string($mysqli, $_POST['admin_password']);
 
-    $md5password = md5($password);
-    $bcryptpassword = password_hash($md5password, PASSWORD_BCRYPT);
 
-    $query = "SELECT AdminId FROM Admin WHERE AdminName='$admin_name' AND Password='$password'";
-    $results = mysqli_query($mysqli, $query);
-    // echo mysqli_num_rows($results);
+    $results = $mysqli->query("SELECT AdminId, Password FROM Admins WHERE AdminName='$admin_name'");
+     
     if (mysqli_num_rows($results) == 1) {
 
         // Numeric array
-        $row = $results->fetch_array(MYSQLI_NUM);
-        // Free result set
-        $results->free_result();
+        $data = mysqli_fetch_array($results);
+        
+        
+        if (password_verify($password, $data['Password'])) {
 
-        setcookie('AdminId', $row[0]);
-        setcookie('UserId', '', time() - 3600);
-        header('location: index.php');
+            setcookie('AdminId', $data['AdminId']);
+            setcookie('UserId', '', time() - 3600);
+            header('location: index.php');
+        } else {
+            array_push($errors, "Wrong email/password combination");
+        }
     } else {
         array_push($errors, "Wrong email/password combination");
     }

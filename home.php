@@ -91,8 +91,7 @@
                     $article_id = mysqli_real_escape_string($mysqli, $data['ArticleId']);
                     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
 
-                    $query = "SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'";
-                    $Favourite = mysqli_query($mysqli, $query);
+                    $Favourite = $mysqli->query("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
                     if (mysqli_num_rows($Favourite) == 0) {
 
             ?>
@@ -100,34 +99,35 @@
                             <button type="submit" name="addFav" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Add Favourite</button>
                         </form>
                         <?php
-
-                        if (isset($_POST['addFav'])) {
-
-                            $article_id = mysqli_real_escape_string($mysqli, $_POST['addFav']);
-                            $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-                            $stmt = $mysqli->prepare("INSERT INTO Favourites (UserId,ArticleId) VALUES  ($user_id, $article_id)");
-                            $stmt->execute();
-                            $stmt->close();
-                            header('location: home.php');
-                        }
                     } else {
-                        while ($data = mysqli_fetch_array($Favourite)) {
+                        while ($data = mysqli_fetch_array($Favourite)){
                             ?>
                             <form method="POST" enctype="multipart/form-data" id="form">
-
                                 <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
                             </form>
                             <?php
-                            if (isset($_POST['delFav'])) {
-                                $favourite_id = mysqli_real_escape_string($mysqli, $_POST['delFav']);
-                                $stmt = $mysqli->prepare("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
-                                $stmt->execute();
-                                $stmt->close();
-                                header('location: home.php');
-                            }
+                            
                         }
                     }
                 }
+            }
+
+            if (isset($_POST['addFav'])) {
+
+                $article_id = mysqli_real_escape_string($mysqli, $_POST['addFav']);
+                $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+                $stmt = $mysqli->prepare("INSERT INTO Favourites (UserId,ArticleId) VALUES  ('$user_id', '$article_id')");
+                $stmt->execute();
+                $stmt->close();
+                header('location: home.php');
+            }
+
+            if (isset($_POST['delFav'])) {
+                $favourite_id = mysqli_real_escape_string($mysqli, $_POST['delFav']);
+                $stmt = $mysqli->prepare("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
+                $stmt->execute();
+                $stmt->close();
+                header('location: home.php');
             }
             ?>
             </td>

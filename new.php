@@ -69,7 +69,6 @@
 $errors = array();
 if (isset($_POST['addTopic'])) {
     if (isset($_COOKIE['UserId'])) {
-
     } else {
         array_push($errors, "You have to be logged to pos a new Article");
     }
