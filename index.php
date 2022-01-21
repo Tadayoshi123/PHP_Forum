@@ -7,47 +7,42 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Index</title>
 	<style>
-		body {
-			background-color: #818181;
-		}
-		.sidenav {
-			display: flex;
-			height: 10%;
-			width: 100%;
-			position: fixed;
-			top: 0;
-			left: 0;
-			background-color: #111;
-			padding-top: 20px;
-		}
-
-		.sidenav a {
-			padding: 6px 8px 6px 16px;
-			text-decoration: none;
-			font-size: 25px;
-			color: #818181;
-
-		}
-
-		.sidenav a:hover {
-			color: #f1f1f1;
-		}
+		<?php include 'static/css/index.css'; ?>
 	</style>
 </head>
 
 <body>
-	<div class="sidenav">
-		<a href="/php_forum/login.php">Login</a>
-		<a href="/php_forum/register.php">Register</a>
-		<a href="/php_forum/home.php">Home</a>
-		<a href="/php_forum/new.php">New</a>
+	<div class="navbar">
+		<a href="/php_forum/login.php">Connexion</a>
+		<a href="/php_forum/register.php">Inscription</a>
+		<a href="/php_forum/home.php">Accueil</a>
+		<a href="/php_forum/new.php">Nouveau Post</a>
 		<a href="/php_forum/details.php">Details</a>
-		<a href="/php_forum/edit.php">Edit</a>
-		<a href="/php_forum/account.php">Account</a>
+		<a href="/php_forum/edit.php">Modifier</a>
+		<a href="/php_forum/account.php">Compte</a>
 		<a href="/php_forum/login_admin.php">Connexion Admin</a>
 		<a href="/php_forum/panel_admin.php">Panel Admin</a>
+		<form class="searchbar" method="post">
+			<input type="text" placeholder="Cherchez un article" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
+			<input type="submit" name="submit">
+		</form>
 	</div>
-	
+
 </body>
 
 </html>
+
+<?php
+$mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
+
+if (isset($_POST["submit"])) {
+	$str = $_POST["search"];
+	$results = $mysqli->query("SELECT Title FROM Articles WHERE Title LIKE '$str'");
+
+	while ($data = mysqli_fetch_array($results)) {
+		if ($str == $data['ArticleId']) {
+			header("Location : http://localhost/php_forum/details.php?ArticleId=" . $data['ArticleId']);
+		}
+	}
+}
+?>

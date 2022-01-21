@@ -1,0 +1,101 @@
+html,
+
+body {
+    background-color: #000000;
+    color           : #f9f9f9;
+    font-family     : Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+    display         : flex;
+    height          : 3rem;
+    width           : 100%;
+    position        : fixed;
+    top             : 0;
+    left            : 0;
+    background-color: #1b1b1b;
+    justify-content : space-around;
+    align-items     : center;
+    border-radius   : 0px 0px 5px 5px;
+
+}
+
+.navbar a {
+    text-decoration: none;
+    font-size      : 1.3rem;
+    color          : #f9f9f9;
+
+}
+
+.navbar a:hover {
+    text-decoration : underline #ff9000;
+    background-color: #181818;
+}
+
+input[type=text] {
+    border          : none;
+    border-radius   : 5px;
+    color           : #cacaca;
+    background-color: #363636;
+    font-style      : italic;
+}
+
+input[type=submit] {
+    border       : none;
+    border-radius: 5px;
+    background   : #f90;
+    color        : #000;
+}
+
+.connexion {
+    margin-top : 3rem;
+    display    : flex;
+    flex-flow  : column;
+    width      : 100%;
+    align-items: center;
+}
+
+.pageTitle {
+    font-size  : 2.6rem;
+    font-weight: 400;
+}
+
+input[type=email] {
+    border       : 1px solid #555;
+    border-radius: 2px;
+    background   : rgba(48, 47, 45, .9);
+    padding      : 6px 15px;
+    font-size    : 1rem;
+    margin       : 7px auto;
+    color        : #ccc;
+}
+
+input[type=password] {
+    border       : 1px solid #555;
+    border-radius: 2px;
+    background   : rgba(48, 47, 45, .9);
+    padding      : 6px 15px;
+    font-size    : 1rem;
+    margin       : 7px auto;
+    color        : #ccc;
+}
+
+.LOGIN {
+    border       : 0;
+    background   : #f90;
+    color        : #000;
+    border-radius: 5px;
+    padding      : 12px 1rem;
+    margin       : 10px auto 25px;
+    font-size    : 1rem;
+}
+
+.REGISTER {
+    border         : 0;
+    background     : #f90;
+    color          : #000;
+    border-radius  : 5px;
+    padding        : 12px 1rem;
+    font-size      : 1rem;
+    text-decoration: none;
+}
