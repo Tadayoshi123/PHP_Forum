@@ -16,25 +16,9 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar">
-            <div id="forum_tittle">
-                <form method="POST">
-                    <a href="/php_forum/index.php">Forum</a>
-                    <?php if (isset($_COOKIE['UserId'])) : ?>
-                        <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
-                        <?php
-                        if (isset($_POST['deconnexion'])) {
-                            setcookie('UserId', '', time() - 3600);
-                            setcookie('AdminId', '', time() - 3600);
-                            header('location: index.php');
-                        }
-                        ?>
-                    <?php endif ?>
-                </form>
-            </div>
-        </nav>
-    </header>
+    
+    <?php include('navbar.php'); ?>
+
     <div class="new__post">
         <div class="N-title flex padding">
             <h1>Nouveau Topic</h1>

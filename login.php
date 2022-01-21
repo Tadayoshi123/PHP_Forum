@@ -73,6 +73,7 @@ if (isset($_POST['login_user'])) {
             <input type="text" placeholder="Cherchez un article" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
             <input type="submit" name="submit">
         </form>
+        
     </div>
     <div class="connexion">
         <h1 class="pageTitle">Connexion</h1>
