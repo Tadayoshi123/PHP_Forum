@@ -48,20 +48,17 @@
 <?php
 $errors = array();
 if (isset($_POST['admin_login'])) {
-    $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-
+    //-----------------------------------------------------
     $admin_name = mysqli_real_escape_string($mysqli, $_POST['admin_name']);
     $password = mysqli_real_escape_string($mysqli, $_POST['admin_password']);
+    $results = select_db("SELECT AdminId, Password FROM Admins WHERE AdminName='$admin_name'");
 
-
-    $results = $mysqli->query("SELECT AdminId, Password FROM Admins WHERE AdminName='$admin_name'");
-     
     if (mysqli_num_rows($results) == 1) {
 
         // Numeric array
         $data = mysqli_fetch_array($results);
-        
-        
+
+
         if (password_verify($password, $data['Password'])) {
 
             setcookie('AdminId', $data['AdminId']);
@@ -77,10 +74,4 @@ if (isset($_POST['admin_login'])) {
 
 ?>
 
-<?php if (count($errors) > 0) : ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>
+<?php print_error($errors); ?>

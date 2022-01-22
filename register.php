@@ -74,7 +74,8 @@ if (isset($_POST['reg_user'])) {
         array_push($errors, "The two passwords do not match");
     }
     //test if user or email already exist ----------------------------------------------------
-    $results = $mysqli->query("SELECT * FROM Users WHERE Email='$email' OR UserName='$username'");
+    $results = select_db("SELECT * FROM Users WHERE Email='$email' OR UserName='$username'");
+
     if (mysqli_num_rows($results) > 0) {
         array_push($errors, "email or username already exist");
     }
@@ -82,26 +83,13 @@ if (isset($_POST['reg_user'])) {
 
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
-        
+        //-------------------------------------------
         $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
-        // // Ecriture de la requête
-
-        $stmt = $mysqli->prepare("INSERT INTO Users (UserName,Password,Email) VALUES ('$username', '$bcryptpassword', '$email')");
-        $stmt->execute();
-
+        insert_db("INSERT INTO Users (UserName,Password,Email) VALUES ('$username', '$bcryptpassword', '$email')");
         echo "inscription réussie";
-        $stmt->close();
-        $mysqli->close();
-        
     }
 }
 
 ?>
 
-<?php if (count($errors) > 0) : ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>
+<?php print_error($errors); ?>

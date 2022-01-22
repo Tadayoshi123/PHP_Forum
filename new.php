@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    
+
     <?php include('navbar.php'); ?>
 
     <div class="new__post">
@@ -57,42 +57,22 @@ if (isset($_POST['addTopic'])) {
         array_push($errors, "You have to be logged to pos a new Article");
     }
 
-    try {
-        $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
+    //-------------------------A ranger ? ----------------------------
+
+    $mysqli = initiate_db();
 
     $title = mysqli_real_escape_string($mysqli, $_POST['Titre_sujet']);
     $description = mysqli_real_escape_string($mysqli, $_POST['message_newpost']);
     $creation_date = mysqli_real_escape_string($mysqli, date("Y-m-d H:i:s"));
     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-
-
-
+    $mysqli->close();
     if (count($errors) == 0) {
-
-        // // Ecriture de la requête
-
-        $stmt = $mysqli->prepare("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', '$creation_date', '$user_id')");
-        $stmt->execute();
-
-
-        echo "Add successfull";
-        $stmt->close();
-        $mysqli->close();
+        insert_db("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', '$creation_date', '$user_id')");
         header('location: index.php');
     }
+    $mysqli->close();
+    //----------------------------------------------------
 }
-
-
-
+print_error($errors);
 ?>
 
-<?php if (count($errors) > 0) : ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>

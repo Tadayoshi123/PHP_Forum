@@ -1,17 +1,12 @@
 <?php
 $errors = array();
 if (isset($_POST['login_user'])) {
-    $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-
+    //----------------------------------
     $email = mysqli_real_escape_string($mysqli, $_POST['user_mail']);
     $password = mysqli_real_escape_string($mysqli, $_POST['user_password']);
-
-    // $md5password = md5($password);
-
     $bcryptpassword = password_hash($password, PASSWORD_BCRYPT);
+    $results = select_db("SELECT UserId, Password FROM Users WHERE Email='$email'");
 
-    $results = $mysqli->query("SELECT UserId, Password FROM Users WHERE Email='$email'");
-    // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
 
 

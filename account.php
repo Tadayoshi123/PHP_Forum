@@ -22,11 +22,9 @@
 if (isset($_COOKIE['UserId'])) : ?>
     <?php
 
-    $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-
+    //----------------------------
     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-
-    $results = $mysqli->query("SELECT * FROM Users WHERE UserId='$user_id'");
+    $results = select_db("SELECT * FROM Users WHERE UserId='$user_id'");
     // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
 
@@ -91,30 +89,31 @@ if (isset($_COOKIE['UserId'])) : ?>
     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
 
 
-    try {
-        $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
-
     if (isset($_POST['new_user_name'])) {
+        //---------------------------
         $username = mysqli_real_escape_string($mysqli, $_POST['username']);
         $query = "SELECT * FROM Users WHERE UserName='$username'";
-        $results = mysqli_query($mysqli, $query);
+        $results = select_db($query);
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "username already exist");
         } else {
+            //--------------------------------------------
+            $mysqli = initiate_db();
             $stmt = $mysqli->prepare("UPDATE Users SET UserName = '$username' WHERE UserId = '$user_id'");
             // $stmt->bind_param("s", $username);
             $stmt->execute();
             header('location: account.php');
             $stmt->close();
+            $mysqli->close();
         }
+        
     }
 
     if (isset($_POST['new_email'])) {
+        //--------------------------------------------
+        $mysqli = initiate_db();
         $email = mysqli_real_escape_string($mysqli, $_POST['email']);
-        $results = $mysqli->query("SELECT * FROM Users WHERE Email='$email'");
+        $results = select_db("SELECT * FROM Users WHERE Email='$email'");
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "email already exist");
         } else {
@@ -123,25 +122,31 @@ if (isset($_COOKIE['UserId'])) : ?>
             header('location: account.php');
             $stmt->close();
         }
+        $mysqli->close();
     }
 
     if (isset($_POST['new_password'])) {
+        //--------------------------------------------
+        $mysqli = initiate_db();
         $psw = mysqli_real_escape_string($mysqli, $_POST['psw']);
         $psw_repeat = mysqli_real_escape_string($mysqli, $_POST['psw_repeat']);
         if ($psw != $psw_repeat) {
 
             array_push($errors, "The two passwords do not match");
         } else {
-            $md5password = md5($psw);
-            $stmt = $mysqli->prepare("UPDATE Users SET Password = '$md5password' WHERE UserId = '$user_id'");
+            
+            $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
+            $stmt = $mysqli->prepare("UPDATE Users SET Password = '$bcryptpassword' WHERE UserId = '$user_id'");
             $stmt->execute();
             header('location: account.php');
             $stmt->close();
+            
         }
+        $mysqli->close();
     }
 
-
-    $result = $mysqli->query("SELECT * From Articles WHERE UserId = '$user_id' ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
+    //----------------------------------
+    $result = select_db("SELECT * From Articles WHERE UserId = '$user_id' ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles == 0) {
@@ -178,12 +183,8 @@ if (isset($_COOKIE['UserId'])) : ?>
         </table>
         <?php
         if (isset($_POST['deleteTopic'])) {
-
-            try {
-                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-            } catch (Exception $e) {
-                die('Erreur : ' . $e->getMessage());
-            }
+            //-----------------------------------------------
+            $mysqli = initiate_db();
             $article_id = mysqli_real_escape_string($mysqli, $_POST['deleteTopic']);
             $stmt = $mysqli->prepare("DELETE FROM Articles WHERE ArticleId = '$article_id'");
             $stmt->execute();
@@ -195,9 +196,8 @@ if (isset($_COOKIE['UserId'])) : ?>
             $mysqli->close();
         }
     }
-
-
-    $result = $mysqli->query("SELECT Title, Description, CreationDate , Favourites.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.UserId = Users.UserId"); // On utilise l'instance créée pour faire une requête
+    //-----------------------------------------------
+    $result = select_db("SELECT Title, Description, CreationDate , Favourites.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.UserId = Users.UserId"); // On utilise l'instance créée pour faire une requête
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles != 0) {
@@ -242,10 +242,13 @@ if (isset($_COOKIE['UserId'])) : ?>
                 if (isset($_COOKIE['UserId'])) {
 
                     echo '</td><td>';
+
+                    //------------------------------------------
                     $article_id = mysqli_real_escape_string($mysqli, $data['ArticleId']);
                     $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
 
-                    $Favourite = $mysqli->query("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
+                    $Favourite = select_db("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
+                    
                     if (mysqli_num_rows($Favourite) == 0) {
 
             ?>
@@ -255,14 +258,15 @@ if (isset($_COOKIE['UserId'])) : ?>
                         <?php
 
                         if (isset($_POST['addFav'])) {
-
+                            //-----------------------------------
+                            $mysqli = initiate_db();
                             $article_id = mysqli_real_escape_string($mysqli, $_POST['addFav']);
                             $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-                            $stmt = $mysqli->prepare("INSERT INTO Favourites (UserId,ArticleId) VALUES ($user_id, $article_id)");
-                            $stmt->execute();
-                            $stmt->close();
+                            insert_db("INSERT INTO Favourites (UserId,ArticleId) VALUES ($user_id, $article_id)");
                             header('location: account.php');
+                            $mysqli->close();
                         }
+                        $mysqli->close();
                     } else {
                         while ($data = mysqli_fetch_array($Favourite)) {
                         ?>
@@ -272,11 +276,14 @@ if (isset($_COOKIE['UserId'])) : ?>
                             </form>
             <?php
                             if (isset($_POST['delFav'])) {
+                                //--------------------------------
+                                $mysqli = initiate_db();
                                 $favourite_id = mysqli_real_escape_string($mysqli, $_POST['delFav']);
                                 $stmt = $mysqli->prepare("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
                                 $stmt->execute();
                                 $stmt->close();
                                 header('location: account.php');
+                                $mysqli->close();
                             }
                         }
                     }
@@ -297,10 +304,4 @@ if (isset($_COOKIE['UserId'])) : ?>
     <?php array_push($errors, "vous devez être connectés pour acceder a cette page") ?>
 <?php endif ?>
 
-<?php if (count($errors) > 0) : ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>
+<?php print_error($errors); ?>

@@ -20,13 +20,10 @@
 <?php $errors = array();
 if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     if (isset($_GET['ArticleId'])) {
-        $mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-
+        //----------------------------------------------------
         $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
         $article_id = mysqli_real_escape_string($mysqli, $_GET['ArticleId']);
-
-        $results = $mysqli->query("SELECT * FROM Articles WHERE UserId='$user_id' AND ArticleId = '$article_id'");
-        // echo mysqli_num_rows($results);
+        $results = select_db("SELECT * FROM Articles WHERE UserId='$user_id' AND ArticleId = '$article_id'");
         if (mysqli_num_rows($results) == 1) {
 
             $data = mysqli_fetch_array($result);
@@ -95,22 +92,14 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     <?php
     if (isset($_POST['editTopic'])) {
 
-
-        try {
-            $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-        } catch (Exception $e) {
-            die('Erreur : ' . $e->getMessage());
-        }
-
+        //------------------------------
+        $mysqli = initiate_db();
         $title = mysqli_real_escape_string($mysqli, $_POST['Titre_sujet']);
         $description = mysqli_real_escape_string($mysqli, $_POST['message_newpost']);
         $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
         $article_id = mysqli_real_escape_string($mysqli, $_GET['ArticleId']);
-
         $stmt = $mysqli->prepare("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
         $stmt->execute();
-
-
         echo "Add successfull";
         $stmt->close();
         $mysqli->close();
@@ -119,9 +108,5 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     ?>
 
 <?php else : ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
+    <?php print_error($errors); ?>
 <?php endif ?>

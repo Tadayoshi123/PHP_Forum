@@ -20,16 +20,10 @@
 if (isset($_COOKIE['AdminId'])) : ?>
     Article list:
     <?php
-
-    try {
-        $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-    } catch (Exception $e) {
-        die('Erreur : ' . $e->getMessage());
-    }
-
-
-
+    //--------------------------------------
+    $mysqli = initiate_db();
     $result = $mysqli->query("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
+
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles == 0) {
@@ -70,16 +64,11 @@ if (isset($_COOKIE['AdminId'])) : ?>
         <?php
         if (isset($_POST['deleteTopic'])) {
 
-            try {
-                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-            } catch (Exception $e) {
-                die('Erreur : ' . $e->getMessage());
-            }
+            //--------------------------------------------
+            $mysqli = initiate_db();
             $article_id = mysqli_real_escape_string($mysqli, $_POST['deleteTopic']);
             $stmt = $mysqli->prepare("DELETE FROM Articles WHERE ArticleId = '$article_id'");
             $stmt->execute();
-
-
             echo "Delete successfull";
             header('location: panel_admin.php');
             $stmt->close();
@@ -87,21 +76,13 @@ if (isset($_COOKIE['AdminId'])) : ?>
         }
         if (isset($_POST['editTopic'])) {
 
-
-            try {
-                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-            } catch (Exception $e) {
-                die('Erreur : ' . $e->getMessage());
-            }
-
+            //--------------------------------------------
+            $mysqli = initiate_db();
             $title = mysqli_real_escape_string($mysqli, $_POST['Titre']);
             $description = mysqli_real_escape_string($mysqli, $_POST['description']);
             $article_id = mysqli_real_escape_string($mysqli, $_POST['editTopic']);
-
             $stmt = $mysqli->prepare("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
             $stmt->execute();
-
-
             echo "Edit successfull";
             header('location: panel_admin.php');
             $stmt->close();
@@ -109,7 +90,8 @@ if (isset($_COOKIE['AdminId'])) : ?>
         }
     }
 
-    $result = $mysqli->query("SELECT * From Users"); // On utilise l'instance créée pour faire une requête
+    //------------------------------------
+    $result = select_db("SELECT * From Users"); // On utilise l'instance créée pour faire une requête
     $nb_users = mysqli_num_rows($result);
 
     if ($nb_users == 0) {
@@ -145,41 +127,24 @@ if (isset($_COOKIE['AdminId'])) : ?>
     <?php
         if (isset($_POST['delete_user'])) {
 
-            try {
-                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-            } catch (Exception $e) {
-                die('Erreur : ' . $e->getMessage());
-            }
+            //-----------------------------------------
+            $mysqli = initiate_db();
             $user_id = mysqli_real_escape_string($mysqli, $_POST['delete_user']);
             $stmt = $mysqli->prepare("DELETE FROM Users WHERE UserId = '$user_id'");
             $stmt->execute();
-
-
             echo "Delete successfull";
             header('location: panel_admin.php');
             $stmt->close();
             $mysqli->close();
         }
         if (isset($_POST['edit_user'])) {
-
-
-            try {
-                $mysqli  = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-            } catch (Exception $e) {
-                die('Erreur : ' . $e->getMessage());
-            }
-
-            // $user_id = ;
+            //----------------------------------
+            $mysqli = initiate_db();
             $user_name = mysqli_real_escape_string($mysqli, $_POST['user_name']);
-
             $email = mysqli_real_escape_string($mysqli, $_POST['email']);
-
             $user_id = mysqli_real_escape_string($mysqli, $_POST['edit_user']);
-
             $stmt = $mysqli->prepare("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
             $stmt->execute();
-
-
             echo "Add successfull";
             header('location: panel_admin.php');
             $stmt->close();
@@ -193,10 +158,4 @@ if (isset($_COOKIE['AdminId'])) : ?>
     <?php array_push($errors, "vous devez être connectés pour acceder a cette page") ?>
 <?php endif ?>
 
-<?php if (count($errors) > 0) : ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
-<?php endif ?>
+<?php print_error($errors); ?>

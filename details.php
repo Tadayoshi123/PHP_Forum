@@ -12,20 +12,12 @@
 
 <?php
 
-$mysqli = new mysqli("localhost", "root", "", "php_exam_db"); // Connexion à la db "php_exam"
-// si vous avez une erreur ici, remplacez le deuxième "root" par une string vide
 
-// Check connection
-if ($mysqli->connect_errno) {
-    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
-    exit();
-}
 if (!isset($_GET['ArticleId'])) {
     echo 'Article does not exist';
 } else {
-
-    $results = $mysqli->query("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
-
+    //----------------------------------------------------
+    $results = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
 ?>
     <table width="500" border="1">
         <tr>
