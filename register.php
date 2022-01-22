@@ -1,57 +1,3 @@
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Forum</title>
-    <link rel="icon" href="/static/img/icon/forum.png">
-    <link rel="stylesheet" href="/static/css/registercss.php">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-</head>
-
-<body>
-    <header>
-        <nav class="navbar">
-            <div id="forum_tittle">
-                <a href="/php_forum/index.php">Forum</a>
-            </div>
-        </nav>
-    </header>
-
-    <div class="registration">
-        <div class="L-Title flex padding">
-            <h1>Inscription</h1>
-        </div>
-        <p class="obligation">Remplissez ce formulaire d'adhésion</p>
-        <br>
-        <div class="RegisterForm flex padding">
-            <form method="POST">
-                <div class="username">
-                    <label for="username"> Pseudo : </label>
-                    <input type="text" placeholder="Entrez un Pseudo" name="username" required>
-                </div>
-                <div class="email">
-                    <label for="email"> Email : </label>
-                    <input type="email" placeholder="Entrez votre email" name="email" required>
-                </div>
-                <div class="password">
-                    <label for="password"> Mot de Passe : </label>
-                    <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
-                </div>
-                <div class="psw-repeat">
-                    <label for="psw-repeat"> Confirmez le Mot de Passe : </label>
-                    <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
-                </div>
-                <div class="clear flex">
-                    <button type="submit" class="signupbtn" name="reg_user">Inscription</button>
-                    <a href="/php_forum/index.php" class="cancelbtn">Annuler</a>
-                </div>
-            </form>
-        </div>
-    </div>
-</body>
-
-
 <?php
 
 $errors = array();
@@ -66,7 +12,7 @@ if (isset($_POST['reg_user'])) {
     $username = mysqli_real_escape_string($mysqli, $_POST['username']);
     $email = mysqli_real_escape_string($mysqli, $_POST['email']);
     $psw = mysqli_real_escape_string($mysqli, $_POST['psw']);
-    $psw_repeat = mysqli_real_escape_string($mysqli, $_POST['psw_repeat']);
+    $psw_repeat = mysqli_real_escape_string($mysqli, $_POST['pswd_repeat']);
 
 
     if ($psw != $psw_repeat) {
@@ -82,7 +28,7 @@ if (isset($_POST['reg_user'])) {
 
     // Finally, register user if there are no errors in the form
     if (count($errors) == 0) {
-        
+
         $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
         // // Ecriture de la requête
 
@@ -92,7 +38,6 @@ if (isset($_POST['reg_user'])) {
         echo "inscription réussie";
         $stmt->close();
         $mysqli->close();
-        
     }
 }
 
@@ -105,3 +50,52 @@ if (isset($_POST['reg_user'])) {
         <?php endforeach ?>
     </div>
 <?php endif ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inscription</title>
+    <style>
+        <?php include 'static/css/register.css'; ?>
+    </style>
+</head>
+
+<body>
+    <?php include('navbar.php'); ?>
+
+    <div class="registration">
+        <h1 class="pageTitle">Inscription</h1>
+        <p class="obligation">Remplissez ce formulaire d'adhésion</p>
+        <br>
+        <div class="loginForm">
+            <form method="POST">
+                <div class="username">
+                    <label for="username"> Pseudo : </label>
+                    <input type="text" placeholder="Entrez un Pseudo" name="username" required>
+                </div>
+                <div class="email">
+                    <label for="email"> Email : </label>
+                    <input type="email" placeholder="Entrez votre email" name="email" required>
+                </div>
+                <div class="password">
+                    <label for="password"> Mot de Passe : </label>
+                    <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
+                </div>
+                <div class="psw_repeat">
+                    <label for="psw_repeat"> Confirmez le Mot de Passe : </label>
+                    <input type="password" placeholder="Réecrivez le mot de passe" name="pswd_repeat" required>
+                </div>
+                <div class="register">
+                    <button type="submit" class="signupbtn" name="reg_user">Inscription</button>
+                    <a href="/php_forum/index.php" class="cancelbtn">Annuler</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>

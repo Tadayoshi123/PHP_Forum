@@ -14,8 +14,6 @@
 
 </html>
 
-<?php include('navbar.php'); ?>
-
 <?php $errors = array();
 if (isset($_COOKIE['AdminId'])) : ?>
     Article list:
