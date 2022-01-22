@@ -1,6 +1,4 @@
-html,
-
-.connexion {
+.registration {
     margin-top : 3rem;
     display    : flex;
     flex-flow  : column;
@@ -11,6 +9,17 @@ html,
 .pageTitle {
     font-size  : 2.6rem;
     font-weight: 400;
+}
+
+input[name=username] {
+    border       : 1px solid #555 !important;
+    border-radius: 2px !important;
+    background   : rgba(48, 47, 45, .9) !important;
+    padding      : 6px 15px;
+    font-size    : 1rem;
+    font-style   : normal !important;
+    margin       : 7px auto;
+    color        : #ccc;
 }
 
 input[type=email] {
@@ -32,29 +41,19 @@ input[type=password] {
     margin       : 7px auto;
     color        : #ccc;
 }
-/* login_admin.php */
-#admin {
-    border       : 1px solid #555;
-    border-radius: 2px;
-    background   : rgba(48, 47, 45, .9);
-    padding      : 6px 15px;
-    font-size    : 1rem;
-    margin       : 7px auto;
-    color        : #ccc;
-}
 
-.LOGIN {
+.signupbtn {
     border       : 0;
-    background   : #f90;
-    color        : #000;
-    border-radius: 5px;
-    padding      : 12px 1rem;
-    margin       : 10px auto 25px;
-    font-size    : 1.2rem;
-    font-weight  : 700;
+    background   : #f90 !important;
+    color        : #000 !important;
+    border-radius: 5px !important;
+    padding      : 12px 1rem !important;
+    margin       : 10px auto 25px !important;
+    font-size    : 1.2rem !important;
+    font-weight  : 700 !important;
 }
 
-.REGISTER {
+.cancelbtn {
     background     : #1f1f1f;
     color          : #acacac;
     padding        : 12px 1rem;
@@ -64,5 +63,4 @@ input[type=password] {
     text-decoration: none;
     border         : none;
     border-radius  : 4px;
-
 }

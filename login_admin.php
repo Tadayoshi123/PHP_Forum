@@ -1,50 +1,3 @@
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Forum</title>
-    <link rel="icon" href="/static/img/icon/forum.png">
-    <link rel="stylesheet" href="/static/css/logincss.php">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-</head>
-
-
-<body>
-    <header>
-        <nav class="navbar">
-            <div id="forum_tittle">
-                <a href="/php_forum/index.php">Forum</a>
-            </div>
-        </nav>
-    </header>
-    <div class="connexion">
-        <div class="L-Title flex padding">
-            <h1>Connexion</h1>
-        </div>
-        <div class="loginForm padding flex">
-            <form action="" method="POST">
-                <div id="mail">
-                    <br>
-                    <label for="admin"> Admin Name : </label>
-                    <br>
-                    <input id="admin" name="admin_name" required>
-                </div>
-                <div id="mdp">
-                    <label for="password"> Mot de passe : </label>
-                    <br>
-                    <input type="password" id="password" name="admin_password" required>
-                </div>
-                <div class="btnLogin flex">
-                    <button class="LOGIN" type="submit" name="admin_login">Connexion</button>
-                </div>
-            </form>
-        </div>
-    </div>
-</body>
-
-
-
 <?php
 $errors = array();
 if (isset($_POST['admin_login'])) {
@@ -53,6 +6,12 @@ if (isset($_POST['admin_login'])) {
     $password = mysqli_real_escape_string($mysqli, $_POST['admin_password']);
     $results = select_db("SELECT AdminId, Password FROM Admins WHERE AdminName='$admin_name'");
 
+<<<<<<< HEAD
+=======
+
+    $results = $mysqli->query("SELECT AdminId, Password FROM Admin WHERE AdminName='$admin_name'");
+
+>>>>>>> 724fed4670108f4aee28a335cd9c816983638acf
     if (mysqli_num_rows($results) == 1) {
 
         // Numeric array
@@ -74,4 +33,59 @@ if (isset($_POST['admin_login'])) {
 
 ?>
 
+<<<<<<< HEAD
 <?php print_error($errors); ?>
+=======
+<?php if (count($errors) > 0) : ?>
+    <div class="error">
+        <?php foreach ($errors as $error) : ?>
+            <p><?php echo $error ?></p>
+        <?php endforeach ?>
+    </div>
+<?php endif ?>
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion Admin</title>
+    <style>
+        <?php include 'static/css/login.css'; ?>
+    </style>
+</head>
+
+
+<body>
+    <?php include('navbar.php'); ?>
+    <div class="connexion">
+        <h1 class="pageTitle">Connexion Admin</h1>
+        <div class="loginForm">
+            <form action="" method="POST">
+                <div id="mail">
+                    <br>
+                    <label for="admin"> Admin Name : </label>
+                    <br>
+                    <input id="admin" name="admin_name" required>
+                </div>
+                <div id="mdp">
+                    <label for="password"> Mot de passe : </label>
+                    <br>
+                    <input type="password" id="password" name="admin_password" required>
+                </div>
+                <div class="btnLogin">
+                    <button class="LOGIN" type="submit" name="admin_login">Connexion</button>
+                </div>
+            </form>
+        </div>
+        <div class="otherLogin">
+            <p>Vous n'avez pas de compte ?</p>
+            <a class="REGISTER" href="/php_forum/register_admin.php">Inscrivez-vous ici</a>
+        </div>
+    </div>
+</body>
+
+</html>
+>>>>>>> 724fed4670108f4aee28a335cd9c816983638acf
