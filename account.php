@@ -144,8 +144,15 @@ if (isset($_COOKIE['UserId'])) : ?>
             echo "Delete successfull";
             header('location: account.php');
         }
+        if (isset($_POST['delFav'])) {
+            //--------------------------------
+            $favourite_id = string_db($_POST['delFav']);
+            insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
+            header('location: account.php');
+        }
+
     ?>
-        
+
         <table width="500" border="1">
             <tr>
                 <td>
@@ -162,7 +169,8 @@ if (isset($_COOKIE['UserId'])) : ?>
                 <tr>
                     <td>
                         <form method="POST" enctype="multipart/form-data" id="form">
-                            <?php echo  htmlentities(trim($data['Title'])); ?>
+                            <?php echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>'; ?>
+
                     </td>
                     <td>
                         <?php echo htmlentities(trim($data['Description'])); ?>
@@ -184,17 +192,18 @@ if (isset($_COOKIE['UserId'])) : ?>
                 </td>
                 </tr>
         </table>
-        <?php
-        
+    <?php
+
     }
     //-----------------------------------------------
     echo $user_id;
-    $result = select_db("SELECT Articles.Title, Articles.Description, Articles.CreationDate , Articles.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.ArticleId = Articles.ArticleId"); // On utilise l'instance créée pour faire une requête
+    $result = select_db("SELECT Articles.Title, Articles.Description, Articles.CreationDate , Articles.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.ArticleId = Articles.ArticleId WHERE Favourites.UserId = $user_id"); // On utilise l'instance créée pour faire une requête
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles != 0) {
+        
 
-        ?>
+    ?>
         <div>Favourite articles</div>
         <table width="500" border="1">
             <tr>
@@ -219,8 +228,6 @@ if (isset($_COOKIE['UserId'])) : ?>
                 echo htmlentities(trim($data['UserName']));
                 echo '</td><td>';
 
-                // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
-                echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
 
                 // on affiche le titre du sujet, et sur cet article, on insère le lien qui nous permettra de voir en détail l'article
                 echo '<a href="/php_forum/details.php?ArticleId=', $data['ArticleId'], '">', htmlentities(trim($data['Title'])), '</a>';
@@ -241,36 +248,14 @@ if (isset($_COOKIE['UserId'])) : ?>
 
                     $Favourite = select_db("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
 
-                    if (mysqli_num_rows($Favourite) == 0) {
-
-            ?>
+                    
+                    while ($data = mysqli_fetch_array($Favourite)) {
+                    ?>
                         <form method="POST" enctype="multipart/form-data" id="form">
-                            <button type="submit" name="addFav" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Add Favourite</button>
+
+                            <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
                         </form>
-                        <?php
-
-                        if (isset($_POST['addFav'])) {
-                            //-----------------------------------
-                            $article_id = string_db($_POST['addFav']);
-                            $user_id = string_db($_COOKIE['UserId']);
-                            insert_db("INSERT INTO Favourites (UserId,ArticleId) VALUES ($user_id, $article_id)");
-                            header('location: account.php');
-                        }
-                    } else {
-                        while ($data = mysqli_fetch_array($Favourite)) {
-                        ?>
-                            <form method="POST" enctype="multipart/form-data" id="form">
-
-                                <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
-                            </form>
-            <?php
-                            if (isset($_POST['delFav'])) {
-                                //--------------------------------
-                                $favourite_id = string_db($_POST['delFav']);
-                                insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
-                                header('location: account.php');
-                            }
-                        }
+                    <?php                        
                     }
                 }
             }
