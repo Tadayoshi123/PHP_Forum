@@ -14,12 +14,56 @@
 
 </html>
 
-<?php include('navbar.php'); ?>
+<!-- <?php include('navbar.php'); ?> -->
 <?php include('functions.php'); ?>
 
 
 <?php $errors = array();
-if (isset($_COOKIE['AdminId'])) : ?>
+if (isset($_POST['delete_user'])) {
+
+    //-----------------------------------------
+    $user_id = string_db($_POST['delete_user']);
+    insert_db("DELETE FROM Users WHERE UserId = '$user_id'");
+    header('location: panel_admin.php');
+}
+if (isset($_POST['edit_user'])) {
+    //----------------------------------
+    $user_name = string_db($_POST['user_name']);
+    $email = string_db($_POST['email']);
+    $user_id = string_db($_POST['edit_user']);
+    
+    $results1 = select_db("SELECT * FROM Users WHERE UserName='$user_name' AND Users.UserID != '$user_id'");
+    $results2 = select_db("SELECT * FROM Users WHERE Email='$email' AND Users.UserID != '$user_id'");
+    if (mysqli_num_rows($results1) > 0) {
+        array_push($errors, "username already exist");
+    } else if(mysqli_num_rows($results2) > 0) {
+        array_push($errors, "email already exist");
+    } else{
+        insert_db("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
+        header('location: panel_admin.php');
+    }
+
+    
+}
+if (isset($_POST['deleteTopic'])) {
+
+    //--------------------------------------------
+    $article_id = string_db($_POST['deleteTopic']);
+    insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
+    header('location: panel_admin.php');
+}
+if (isset($_POST['editTopic'])) {
+
+    //--------------------------------------------
+    $title = string_db($_POST['Titre']);
+    $description = string_db($_POST['description']);
+    $article_id = string_db($_POST['editTopic']);
+    insert_db("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
+    header('location: panel_admin.php');
+}
+
+
+if (isset($_COOKIE['AdminId'])) { ?>
     Article list:
     <?php
     //--------------------------------------
@@ -63,22 +107,7 @@ if (isset($_COOKIE['AdminId'])) : ?>
         </table>
 
         <?php
-        if (isset($_POST['deleteTopic'])) {
-
-            //--------------------------------------------
-            $article_id = string_db( $_POST['deleteTopic']);
-            insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
-            header('location: panel_admin.php');
-        }
-        if (isset($_POST['editTopic'])) {
-
-            //--------------------------------------------
-            $title = string_db( $_POST['Titre']);
-            $description = string_db( $_POST['description']);
-            $article_id = string_db( $_POST['editTopic']);
-            insert_db("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
-            header('location: panel_admin.php');
-        }
+        
     }
 
     //------------------------------------
@@ -115,28 +144,10 @@ if (isset($_COOKIE['AdminId'])) : ?>
                 </tr>
         </table>
 
-    <?php
-        if (isset($_POST['delete_user'])) {
-
-            //-----------------------------------------
-            $user_id = string_db( $_POST['delete_user']);
-            insert_db("DELETE FROM Users WHERE UserId = '$user_id'");
-            header('location: panel_admin.php');
-        }
-        if (isset($_POST['edit_user'])) {
-            //----------------------------------
-            $user_name = string_db( $_POST['user_name']);
-            $email = string_db( $_POST['email']);
-            $user_id = string_db( $_POST['edit_user']);
-            insert_db("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
-            header('location: panel_admin.php');
-        }
-    }
-    ?>
 
 
-<?php else : ?>
+<?php  } }else{ ?>
     <?php array_push($errors, "vous devez être connectés pour acceder a cette page") ?>
-<?php endif ?>
+<?php } ?>
 
 <?php print_error($errors); ?>
