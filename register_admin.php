@@ -9,6 +9,42 @@
     <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
 </head>
 
+
+<?php include('functions.php'); ?>
+
+<?php
+
+$errors = array();
+
+
+if (isset($_POST['reg_user'])) {
+
+    
+    // ----------------------------------------------------
+    $admin_name = string_db($_POST['username']);
+    $psw = string_db($_POST['psw']);
+    $psw_repeat = string_db($_POST['psw_repeat']);
+    $results = select_db("SELECT * FROM Admins WHERE AdminName='$admin_name'");
+
+    if ($psw != $psw_repeat) {
+
+        array_push($errors, "The two passwords do not match");
+    }
+    if (mysqli_num_rows($results) > 0) {
+        array_push($errors, "email or username already exist");
+    }
+    // Finally, register user if there are no errors in the form
+    if (count($errors) == 0) {
+
+        //---------------------------
+        $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
+        insert_db("INSERT INTO Admins (AdminName,Password) VALUES ('$admin_name', '$bcryptpassword')");
+        echo "inscription réussie";
+    }
+}
+
+?>
+
 <body>
     <header>
         <nav class="navbar">
@@ -47,39 +83,6 @@
     </div>
 </body>
 
-<?php include('functions.php'); ?>
 
-<?php
-
-$errors = array();
-
-
-if (isset($_POST['reg_user'])) {
-
-    if ($psw != $psw_repeat) {
-
-        array_push($errors, "The two passwords do not match");
-    }
-    // ----------------------------------------------------
-    $admin_name = string_db( $_POST['username']);
-    $psw = string_db( $_POST['psw']);
-    $psw_repeat = string_db( $_POST['psw_repeat']);
-    $results = select_db("SELECT * FROM Admins WHERE AdminName='$admin_name'");
-
-    if (mysqli_num_rows($results) > 0) {
-        array_push($errors, "email or username already exist");
-    }
-
-
-    // Finally, register user if there are no errors in the form
-    if (count($errors) == 0) {
-
-        //---------------------------
-        $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
-        insert_db("INSERT INTO Admins (AdminName,Password) VALUES ('$admin_name', '$bcryptpassword')");
-    }
-}
-
-?>
 
 <?php print_error($errors); ?>
