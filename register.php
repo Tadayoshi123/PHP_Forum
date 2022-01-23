@@ -18,7 +18,7 @@ if (isset($_POST['reg_user'])) {
 
         array_push($errors, "The two passwords do not match");
     }
-    //test if user or email already exist ----------------------------------------------------
+    //Vérifie si l'utilisateur ou l'email existe déjà ----------------------------------------------------
     $results = select_db("SELECT * FROM Users WHERE Email='$email' OR UserName='$username'");
 
     if (mysqli_num_rows($results) > 0) {
@@ -26,7 +26,7 @@ if (isset($_POST['reg_user'])) {
     }
 
 
-    // Finally, register user if there are no errors in the form
+    // Enfin, on inscrit l'utilisateur s'il n'y a pas d'erreurs dans le form
     if (count($errors) == 0) {
         //-------------------------------------------
         $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);

@@ -58,7 +58,7 @@
             //---------------------------
             $image_size = getimagesize($_FILES['userImage']['tmp_name']);
             if ($image_size !== false) {
-                //Get the contents of the image
+                //Récupère le contenu de l'image
                 $file = $_FILES['userImage']['tmp_name'];
                 $image = addslashes(file_get_contents($file));
 
@@ -103,71 +103,72 @@
         //----------------------------------
         $result = select_db("SELECT * From Articles WHERE UserId = '$user_id' ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
 
-        
+
 
         ?>
 
-            <div class="info_user">
-                <h1 class="pageTitle">Mon Compte</h1>
-                <div class="information">
-                    Nom Utilisateur: <?php echo trim($data['UserName']); ?>
-                </div>
-                <br>
-                <div class="information">
-                    Mail: <?php echo trim($data['Email']); ?>
-                </div>
-                <div class="information">
-                    Avatar: <?php
-                            if (get_image_db($data['UserId']) !== null) {
-                                echo '<img src="data:image/jpg;base64,' .  base64_encode(get_image_db($data['UserId']))  . '" />';
-                            } else {
-                                echo "<img src='static/image/img_avatar.png' />";
-                            }
-                    
-                    ?>
-                </div>
-                <br>
-
-                <div>
-                    Nouvel Avatar
-                </div>
-
-                <form enctype="multipart/form-data" method="post">
-                    <label>Upload the image file:</label><br />
-                    <input name="userImage" type="file" />
-                    <button type="submit" class="signupbtn" name="new_avatar">Soumettre</button>
-                </form>
-
-                <form method="POST">
-                    <div class="information">
-                        <label for="username">Changer de Nom Utilisateur : </label>
-                        <input type="text" placeholder="Nouveau nom" name="username" required>
-                        <button type="submit" class="signupbtn" name="new_user_name">Soumettre</button>
-                    </div>
-                </form>
-                <br>
-                <form method="POST">
-                    <div class="information">
-                        <label for="email"> Changer de mail : </label>
-                        <input type="text" placeholder="Nouveau mail" name="email" required>
-                        <button type="submit" class="signupbtn" name="new_email">Soumettre</button>
-                    </div>
-                </form>
-                <br>
-                <form method="POST">
-                    <div class="information">
-                        <label for="password">Changer de Mot de passe : </label>
-                        <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
-                    </div>
-                    <div class="information">
-                        <label for="psw-repeat"> Confirm new password : </label>
-                        <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
-                        <button type="submit" class="signupbtn" name="new_password">Soumettre</button>
-                    </div>
-                </form>
+        <div class="info_user">
+            <h1 class="pageTitle">Mon Compte</h1>
+            <div class="information">
+                Nom Utilisateur: <?php echo trim($data['UserName']); ?>
             </div>
-            <?php
-            if (mysqli_num_rows($result) == 0) {
+            <br>
+            <div class="information">
+                Mail: <?php echo trim($data['Email']); ?>
+            </div>
+            <div class="information">
+                Avatar: <?php
+                        if (get_image_db($data['UserId']) !== null) {
+                            echo '<img src="data:image/jpg;base64,' .  base64_encode(get_image_db($data['UserId']))  . '" />';
+                        } else {
+                            echo "<img src='static/image/img_avatar.png' />";
+                        }
+
+                        ?>
+            </div>
+            <br>
+
+            <div>
+                Nouvel Avatar
+            </div>
+
+            <form enctype="multipart/form-data" method="post">
+                <label>Télécharger un fichier image:</label>
+                <br>
+                <input name="userImage" type="file" />
+                <button type="submit" class="signupbtn" name="new_avatar">Soumettre</button>
+            </form>
+
+            <form method="POST">
+                <div class="information">
+                    <label for="username">Changer de Nom Utilisateur : </label>
+                    <input type="text" placeholder="Nouveau nom" name="username" required>
+                    <button type="submit" class="signupbtn" name="new_user_name">Soumettre</button>
+                </div>
+            </form>
+            <br>
+            <form method="POST">
+                <div class="information">
+                    <label for="email"> Changer de mail : </label>
+                    <input type="text" placeholder="Nouveau mail" name="email" required>
+                    <button type="submit" class="signupbtn" name="new_email">Soumettre</button>
+                </div>
+            </form>
+            <br>
+            <form method="POST">
+                <div class="information">
+                    <label for="password">Changer de Mot de passe : </label>
+                    <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
+                </div>
+                <div class="information">
+                    <label for="psw-repeat"> Confirmer le Mot de passe : </label>
+                    <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
+                    <button type="submit" class="signupbtn" name="new_password">Soumettre</button>
+                </div>
+            </form>
+        </div>
+        <?php
+        if (mysqli_num_rows($result) == 0) {
             echo "No article has been created yet";
         } else {
 
@@ -186,7 +187,7 @@
                 insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
                 header('location: account.php');
             }
-            ?>
+        ?>
             <div class="myArticles">
                 <h2 class="subPageTitle">Mes Articles</h2>
                 <table>
