@@ -28,9 +28,8 @@ function get_image_db($UserId)
         // return '<img src="data:image/jpg;base64,' .  base64_encode($img['ImageBlob'])  . '" />';
          
         return $img['ImageBlob'];
-    } else {
-        echo 'Image not found...';
-    }
+    } 
+    return null;
     
 }
 

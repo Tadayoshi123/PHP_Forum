@@ -23,10 +23,16 @@ if (!isset($_GET['ArticleId'])) {
     echo 'Article does not exist';
 } else {
     //----------------------------------------------------
-    $results = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
+    $results = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId, Users.UserId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
 
     while ($data = mysqli_fetch_array($results)) {
         if ($data['ArticleId'] == $_GET['ArticleId']) {
+            if (get_image_db($data['UserId']) !== null){
+                echo '<img src="data:image/jpg;base64,' .  base64_encode(get_image_db($data['UserId']))  . '" />';
+            } else {
+                echo "<img src='static/image/img_avatar.png' />";
+            }
+
 ?>
             <table width="500" border="1">
                 <thead>

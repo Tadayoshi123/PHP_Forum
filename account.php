@@ -118,8 +118,11 @@
                 </div>
                 <div class="information">
                     Avatar: <?php
-                    echo '<img src="data:image/jpg;base64,' .  base64_encode(get_image_db($data['UserId']))  . '" />';
-
+                            if (get_image_db($data['UserId']) !== null) {
+                                echo '<img src="data:image/jpg;base64,' .  base64_encode(get_image_db($data['UserId']))  . '" />';
+                            } else {
+                                echo "<img src='static/image/img_avatar.png' />";
+                            }
                     
                     ?>
                 </div>
