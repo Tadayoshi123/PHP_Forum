@@ -1,21 +1,16 @@
 <!DOCTYPE html>
-<html lang="FR">
+<html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Forum</title>
-    <link rel="icon" href="/static/img/icon/forum.png">
-    <!-- fontstyle -->
-    <link rel="stylesheet" href="/static/css/newpost.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap" rel="stylesheet">
+    <title>Modifier</title>
+    <style>
+        <?php include 'static/css/edit.css'; ?>
+    </style>
 </head>
 
-<!-- <?php include('navbar.php'); ?> -->
 <?php include('functions.php'); ?>
 <?php redirect_to_login(); ?>
 
@@ -43,10 +38,10 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
 ?>
 
 <?php
-if (isset($_POST['editTopic'])) {
+if (isset($_POST['editPost'])) {
 
     //------------------------------
-    $title = string_db($_POST['Titre_sujet']);
+    $title = string_db($_POST['article_Title']);
     $description = string_db($_POST['message_newpost']);
     $user_id = string_db($_COOKIE['UserId']);
     $article_id = string_db($_GET['ArticleId']);
@@ -58,51 +53,26 @@ if (isset($_POST['editTopic'])) {
 <?php if (count($errors) == 0) : ?>
 
     <body>
-        <header>
-            <nav class="navbar">
-                <div id="forum_tittle">
-                    <form method="POST">
-                        <a href="/php_forum/index.php">Forum</a>
-                        <?php if (isset($_COOKIE['UserId'])) : ?>
-                            <button type="submit" class="signupbtn" name="deconnexion">Deconnexion</button>
-                            <?php
-                            if (isset($_POST['deconnexion'])) {
-                                setcookie('UserId', '', time() - 3600);
-                                setcookie('AdminId', '', time() - 3600);
-                                header('location: index.php');
-                            }
-                            ?>
-                        <?php endif ?>
-                    </form>
-                </div>
-            </nav>
-        </header>
+        <?php include('navbar.php'); ?>
         <div class="new__post">
-            <div class="N-title flex padding">
-                <h1>Edit Topic</h1>
-            </div>
+            <h1 class="pageTitle">Modifier l'article</h1>
             <!-- <p class="obligation">{{.Error}}</p> -->
-            <div class="NewpostForm flex padding">
+            <div class="newpostForm">
                 <form method="POST" enctype="multipart/form-data" id="form">
-                    <div class="Titre_post">
-                        <label for="titre-sujet" id="titre-sujet">Titre du Sujet : </label>
+                    <div class="post_Title">
+                        <label for="articleTitle" id="articleTitle">Titre de l'article : </label>
                         <br>
-                        <input type="text" id="Titre_sujet" name="Titre_sujet" value="<?php echo $data['Title']; ?>" required>
+                        <input type="text" id="article_Title" name="article_Title" placeholder="Entrez le titre de l'article" required>
                         <br>
                     </div>
-                    <div class=" text_area">
+                    <div class="text_area">
                         <label for="message">Message : </label>
                         <br>
-                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" required><?php echo $data['Description']; ?></textarea>
+                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" value="Ecrivez quelque chose ..." required></textarea>
                     </div>
             </div>
-            <div class="btn-newpost flex">
-                <div>
-                    <button class="Newpost_submit" type="submit" name="editTopic">Soumettre</button>
-                </div>
-            </div>
+            <button class="Newpost_submit" type="submit" name="editPost">Soumettre</button>
             </form>
-        </div>
         </div>
     </body>
 

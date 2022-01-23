@@ -1,0 +1,68 @@
+.pageTitle {
+    margin-top : 3rem;
+    font-size  : 2.6rem;
+    font-weight: 400;
+}
+
+.subPageTitle {
+    font-size  : 2rem;
+    font-weight: 400;
+}
+
+.Articles {
+    display    : flex;
+    flex-flow  : column;
+    width      : 100%;
+    align-items: flex-start;
+}
+
+input[type="text"] {
+    border       : 1px solid #555;
+    border-radius: 2px;
+    background   : rgba(48, 47, 45, .9);
+    padding      : 6px 15px;
+    font-size    : 1rem;
+    margin       : 7px auto;
+    color        : #ccc;
+}
+
+table {
+    border          : 3px solid #222;
+    background-color: #1c1c1c;
+    color           : #cccccc;
+    margin-top      : 10%;
+    width           : 100%;
+}
+
+thead {
+    background-color: #1c1c1c;
+    font-size       : 1.5rem;
+}
+
+tbody {
+    background-color: #101010;
+    font-size       : 1.2rem;
+}
+
+td {
+    padding: 8px;
+}
+
+a {
+    color          : #ff9000;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline #ff9000;
+}
+
+.Newpost_submit {
+    border       : none;
+    border-radius: 4px;
+    padding      : 5px;
+    background   : #363636;
+    color        : #acacac;
+    font-weight  : 700;
+    width        : 100%;
+}

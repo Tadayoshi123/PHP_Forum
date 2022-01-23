@@ -6,8 +6,6 @@
     <a href="/php_forum/register.php">Inscription</a>
     <a href="/php_forum/home.php">Accueil</a>
     <a href="/php_forum/new.php">Nouveau Post</a>
-    <a href="/php_forum/details.php">Details</a>
-    <a href="/php_forum/edit.php">Modifier</a>
     <a href="/php_forum/account.php">Compte</a>
     <a href="/php_forum/login_admin.php">Connexion Admin</a>
     <a href="/php_forum/register_admin.php">Inscription Admin</a>

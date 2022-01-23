@@ -5,7 +5,11 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Account</title>
+    <title>Panel Admin</title>
+    <style>
+        <?php include 'static/css/panel_admin.css'; ?>
+    </style>
+
 </head>
 
 <body>
@@ -14,7 +18,7 @@
 
 </html>
 
-<!-- <?php include('navbar.php'); ?> -->
+<?php include('navbar.php'); ?>
 <?php include('functions.php'); ?>
 <?php redirect_to_login(); ?>
 
@@ -63,91 +67,105 @@ if (isset($_POST['editTopic'])) {
 
 
 if (isset($_COOKIE['AdminId'])) { ?>
-    Article list:
-    <?php
-    //--------------------------------------
-    $result = select_db("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
+    <h1 class="pageTitle">Panel Admin</h1>
+    <div class="Articles">
+        <h2 class="subPageTitle">Liste des articles:</h2>
+        <?php
+        //--------------------------------------
+        $result = select_db("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
 
-    $nb_articles = mysqli_num_rows($result);
+        $nb_articles = mysqli_num_rows($result);
 
-    if ($nb_articles == 0) {
-        echo "No article has been created yet";
-    } else {
-    ?>
-        <table width="500" border="1">
-            <tr>
-                <td>
-                    Titre
-                </td>
-                <td>
-                    Description
-                </td>
-                <td>
-                    Date de publication
-                </td>
-            </tr>
-            <?php while ($data = mysqli_fetch_array($result)) { ?>
+        if ($nb_articles == 0) {
+            echo "No article has been created yet";
+        } else {
+        ?>
+            <table>
+                <thead>
+                    <tr>
+                        <td>
+                            Titre
+                        </td>
+                        <td>
+                            Description
+                        </td>
+                        <td>
+                            Date de publication
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php while ($data = mysqli_fetch_array($result)) { ?>
+                        <tr>
+                            <td>
+                                <form method="POST" enctype="multipart/form-data" id="form">
+                                    <input type="text" id="Titret" name="Titre" value="<?php echo  htmlentities(trim($data['Title'])); ?>" required>
+                            <td>
+                                <input type="text" id="description" name="description" value="<?php echo htmlentities(trim($data['Description'])); ?>" required>
+                            <td>
+                                <?php echo $data['CreationDate']; ?>
+                            <td>
+                                <button class="Newpost_submit" type="submit" name="editTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Edit Article</button>
+                            <td>
+                                <button class="Newpost_submit" type="submit" name="deleteTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Delete Article</button>
+                                </form>
+                            <?php } ?>
+                            </td>
+                        </tr>
+                </tbody>
+            </table>
+    </div>
+
+<?php
+
+        }
+
+        //------------------------------------
+        $result = select_db("SELECT * From Users"); // On utilise l'instance créée pour faire une requête
+        $nb_users = mysqli_num_rows($result);
+
+        if ($nb_users == 0) {
+            echo "No users has been created yet";
+        } else {
+?>
+    <div class="Users">
+        <h2 class="subPageTitle">Liste des utilisateurs:</h2>
+        <table>
+            <thead>
                 <tr>
                     <td>
-                        <form method="POST" enctype="multipart/form-data" id="form">
-                            <input type="text" id="Titret" name="Titre" value="<?php echo  htmlentities(trim($data['Title'])); ?>" required>
+                        Nom d'utilisateur
+                    </td>
                     <td>
-                        <input type="text" id="description" name="description" value="<?php echo htmlentities(trim($data['Description'])); ?>" required>
-                    <td>
-                        <?php echo $data['CreationDate']; ?>
-                    <td>
-                        <button class="Newpost_submit" type="submit" name="editTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Edit Article</button>
-                    <td>
-                        <button class="Newpost_submit" type="submit" name="deleteTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Delete Article</button>
-                        </form>
-                    <?php } ?>
+                        E-mail
                     </td>
                 </tr>
+            </thead>
+            <tbody>
+                <?php while ($data = mysqli_fetch_array($result)) { ?>
+                    <tr>
+                        <td>
+                            <form method="POST" enctype="multipart/form-data" id="form">
+                                <input type="text" id="user_name" name="user_name" value="<?php echo htmlentities(trim($data['UserName'])); ?>" required>
+                        <td>
+                            <input type="text" id="email" name="email" value="<?php echo htmlentities(trim($data['Email'])); ?>" required>
+                        <td>
+                            <button class="Newpost_submit" type="submit" name="edit_user" value="<?php echo htmlentities(trim($data['UserId'])); ?>">Edit User</button>
+                        <td>
+                            <button class="Newpost_submit" type="submit" name="delete_user" value="<?php echo htmlentities(trim($data['UserId'])); ?>">Delete User</button>
+                            </form>
+                        <?php } ?>
+                        </td>
+                    </tr>
+            </tbody>
         </table>
-
-    <?php
-
-    }
-
-    //------------------------------------
-    $result = select_db("SELECT * From Users"); // On utilise l'instance créée pour faire une requête
-    $nb_users = mysqli_num_rows($result);
-
-    if ($nb_users == 0) {
-        echo "No users has been created yet";
-    } else {
-    ?>
-        <table width="500" border="1">
-            <tr>
-                <td>
-                    UserName
-                </td>
-                <td>
-                    Email
-                </td>
-            </tr>
-            <?php while ($data = mysqli_fetch_array($result)) { ?>
-                <tr>
-                    <td>
-                        <form method="POST" enctype="multipart/form-data" id="form">
-                            <input type="text" id="user_name" name="user_name" value="<?php echo htmlentities(trim($data['UserName'])); ?>" required>
-                    <td>
-                        <input type="text" id="email" name="email" value="<?php echo htmlentities(trim($data['Email'])); ?>" required>
-                    <td>
-                        <button class="Newpost_submit" type="submit" name="edit_user" value="<?php echo htmlentities(trim($data['UserId'])); ?>">Edit User</button>
-                    <td>
-                        <button class="Newpost_submit" type="submit" name="delete_user" value="<?php echo htmlentities(trim($data['UserId'])); ?>">Delete User</button>
-                        </form>
-                    <?php } ?>
-                    </td>
-                </tr>
-        </table>
+    </div>
 
 
 
-    <?php  }
-} else { ?>
-    <?php array_push($errors, "vous devez être connectés pour acceder a cette page") ?>
+<?php  }
+    } else { ?>
+<?php array_push($errors, "vous devez être connectés pour acceder a cette page") ?>
 <?php } ?>
 
 <?php print_error($errors); ?>
