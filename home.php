@@ -14,20 +14,22 @@
 <body>
 
     <?php include('functions.php'); ?>
+    <?php redirect_to_login(); ?>
 
 
     <?php
 
     include('navbar.php');
 
+
     if (isset($_GET['search'])) {
         //------------------------------------
         $strSearch = $_GET["search"];
-        $result = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId  WHERE Title = '$strSearch'"); // On utilise l'instance créée pour faire une requête
+        $result = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId  WHERE Title = '$strSearch' ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
         $nb_articles = mysqli_num_rows($result);
     } else {
         //----------------------------------
-        $result = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
+        $result = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId ORDER BY Articles.CreationDate DESC"); // On utilise l'instance créée pour faire une requête
         $nb_articles = mysqli_num_rows($result);
     }
 
@@ -50,10 +52,14 @@
         echo "No article found";
     } else {
     ?>
+
+
         <table width="500" border="1">
+
             <thead>
                 <tr>
                     <td>
+
                         Auteur
                     </td>
                     <td>
