@@ -25,7 +25,7 @@ if (isset($_COOKIE['UserId'])) : ?>
     <?php
 
     //----------------------------
-    $user_id = string_db( $_COOKIE['UserId']);
+    $user_id = string_db($_COOKIE['UserId']);
     $results = select_db("SELECT * FROM Users WHERE UserId='$user_id'");
     if (mysqli_num_rows($results) == 1) {
 
@@ -86,18 +86,17 @@ if (isset($_COOKIE['UserId'])) : ?>
 
 
 
-    $user_id = string_db( $_COOKIE['UserId']);
+    $user_id = string_db($_COOKIE['UserId']);
 
 
     if (isset($_POST['new_user_name'])) {
         //---------------------------
-        $username = string_db( $_POST['username']);
+        $username = string_db($_POST['username']);
         $query = "SELECT * FROM Users WHERE UserName='$username'";
         $results = select_db($query);
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "username already exist");
         } else {
-            //--------------------------------------------
             insert_db("UPDATE Users SET UserName = '$username' WHERE UserId = '$user_id'");
             header('location: account.php');
         }
@@ -105,7 +104,7 @@ if (isset($_COOKIE['UserId'])) : ?>
 
     if (isset($_POST['new_email'])) {
         //--------------------------------------------
-        $email = string_db( $_POST['email']);
+        $email = string_db($_POST['email']);
         $results = select_db("SELECT * FROM Users WHERE Email='$email'");
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "email already exist");
@@ -116,9 +115,8 @@ if (isset($_COOKIE['UserId'])) : ?>
     }
 
     if (isset($_POST['new_password'])) {
-        //--------------------------------------------
-        $psw = string_db( $_POST['psw']);
-        $psw_repeat = string_db( $_POST['psw_repeat']);
+        $psw = string_db($_POST['psw']);
+        $psw_repeat = string_db($_POST['psw_repeat']);
         if ($psw != $psw_repeat) {
 
             array_push($errors, "The two passwords do not match");
@@ -132,12 +130,22 @@ if (isset($_COOKIE['UserId'])) : ?>
 
     //----------------------------------
     $result = select_db("SELECT * From Articles WHERE UserId = '$user_id' ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
-    $nb_articles = mysqli_num_rows($result);
 
-    if ($nb_articles == 0) {
+    if (mysqli_num_rows($result) == 0) {
         echo "No article has been created yet";
     } else {
+
+        if (isset($_POST['deleteTopic'])) {
+            //-----------------------------------------------
+            $article_id = string_db($_POST['deleteTopic']);
+            insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
+
+
+            echo "Delete successfull";
+            header('location: account.php');
+        }
     ?>
+        
         <table width="500" border="1">
             <tr>
                 <td>
@@ -155,30 +163,33 @@ if (isset($_COOKIE['UserId'])) : ?>
                     <td>
                         <form method="POST" enctype="multipart/form-data" id="form">
                             <?php echo  htmlentities(trim($data['Title'])); ?>
+                    </td>
                     <td>
                         <?php echo htmlentities(trim($data['Description'])); ?>
+                    </td>
                     <td>
                         <?php echo $data['CreationDate']; ?>
+                    </td>
+
                     <td>
                         <button class="Newpost_submit" type="submit" name="deleteTopic" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Delete Article</button>
                         </form>
-                    <?php } ?>
                     </td>
+                    <td>
+                        <form method="GET" enctype="multipart/form-data" id="form" action="/php_forum/edit.php">
+                            <button class="Newpost_submit" type="submit" name="ArticleId" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Edit Article</button>
+                        </form>
+                    </td>
+                <?php } ?>
+                </td>
                 </tr>
         </table>
         <?php
-        if (isset($_POST['deleteTopic'])) {
-            //-----------------------------------------------
-            $article_id = string_db( $_POST['deleteTopic']);
-            insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
-
-
-            echo "Delete successfull";
-            header('location: account.php');
-        }
+        
     }
     //-----------------------------------------------
-    $result = select_db("SELECT Title, Description, CreationDate , Favourites.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.UserId = Users.UserId"); // On utilise l'instance créée pour faire une requête
+    echo $user_id;
+    $result = select_db("SELECT Articles.Title, Articles.Description, Articles.CreationDate , Articles.ArticleId , Users.UserName FROM Articles INNER JOIN Users ON Users.UserId = Articles.UserId INNER JOIN Favourites ON Favourites.ArticleId = Articles.ArticleId"); // On utilise l'instance créée pour faire une requête
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles != 0) {
@@ -225,8 +236,8 @@ if (isset($_COOKIE['UserId'])) : ?>
                     echo '</td><td>';
 
                     //------------------------------------------
-                    $article_id = string_db( $data['ArticleId']);
-                    $user_id = string_db( $_COOKIE['UserId']);
+                    $article_id = string_db($data['ArticleId']);
+                    $user_id = string_db($_COOKIE['UserId']);
 
                     $Favourite = select_db("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
 
@@ -240,8 +251,8 @@ if (isset($_COOKIE['UserId'])) : ?>
 
                         if (isset($_POST['addFav'])) {
                             //-----------------------------------
-                            $article_id = string_db( $_POST['addFav']);
-                            $user_id = string_db( $_COOKIE['UserId']);
+                            $article_id = string_db($_POST['addFav']);
+                            $user_id = string_db($_COOKIE['UserId']);
                             insert_db("INSERT INTO Favourites (UserId,ArticleId) VALUES ($user_id, $article_id)");
                             header('location: account.php');
                         }
@@ -255,7 +266,7 @@ if (isset($_COOKIE['UserId'])) : ?>
             <?php
                             if (isset($_POST['delFav'])) {
                                 //--------------------------------
-                                $favourite_id = string_db( $_POST['delFav']);
+                                $favourite_id = string_db($_POST['delFav']);
                                 insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
                                 header('location: account.php');
                             }

@@ -15,21 +15,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap" rel="stylesheet">
 </head>
 
-<?php include('navbar.php'); ?>
+<!-- <?php include('navbar.php'); ?> -->
 <?php include('functions.php'); ?>
 
 
-<?php $errors = array();
+<?php
+$errors = array();
 if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     if (isset($_GET['ArticleId'])) {
         //----------------------------------------------------
-        initiate_db();
-        $user_id = string_db( $_COOKIE['UserId']);
-        $article_id = string_db( $_GET['ArticleId']);
+        $user_id = string_db($_COOKIE['UserId']);
+        $article_id = string_db($_GET['ArticleId']);
         $results = select_db("SELECT * FROM Articles WHERE UserId='$user_id' AND ArticleId = '$article_id'");
         if (mysqli_num_rows($results) == 1) {
 
-            $data = mysqli_fetch_array($result);
+            $data = mysqli_fetch_array($results);
         } else {
             array_push($errors, "You can't edit this article");
         }
@@ -38,6 +38,19 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     }
 } else {
     array_push($errors, "You have to be logged to edit this article");
+}
+?>
+
+<?php
+if (isset($_POST['editTopic'])) {
+
+    //------------------------------
+    $title = string_db($_POST['Titre_sujet']);
+    $description = string_db($_POST['message_newpost']);
+    $user_id = string_db($_COOKIE['UserId']);
+    $article_id = string_db($_GET['ArticleId']);
+    insert_db("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
+    header('location: edit.php?ArticleId=' . $article_id);
 }
 ?>
 
@@ -92,20 +105,7 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
         </div>
     </body>
 
-    <?php
-    if (isset($_POST['editTopic'])) {
 
-        //------------------------------
-        $mysqli = initiate_db();
-        $title = string_db( $_POST['Titre_sujet']);
-        $description = string_db( $_POST['message_newpost']);
-        $user_id = string_db( $_COOKIE['UserId']);
-        $article_id = string_db( $_GET['ArticleId']);
-        insert_db("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
-        $mysqli->close();
-        header('location: edit.php?ArticleId=' . $article_id);
-    }
-    ?>
 
 <?php else : ?>
     <?php print_error($errors); ?>
