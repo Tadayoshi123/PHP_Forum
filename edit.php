@@ -62,13 +62,13 @@ if (isset($_POST['editPost'])) {
                     <div class="post_Title">
                         <label for="articleTitle" id="articleTitle">Titre de l'article : </label>
                         <br>
-                        <input type="text" id="article_Title" name="article_Title" placeholder="Entrez le titre de l'article" required>
+                        <input type="text" id="article_Title" name="article_Title" value="<?php echo htmlentities(trim($data['Title'])); ?>" required>
                         <br>
                     </div>
                     <div class="text_area">
                         <label for="message">Message : </label>
                         <br>
-                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" value="Ecrivez quelque chose ..." required></textarea>
+                        <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" required><?php echo htmlentities(trim($data['Description'])); ?></textarea>
                     </div>
             </div>
             <button class="Newpost_submit" type="submit" name="editPost">Soumettre</button>
