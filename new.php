@@ -1,7 +1,12 @@
+
+
 <?php
 
-include('functions.php');
+include('functions.php'); ?>
 
+<?php redirect_to_login(); ?>
+
+<?php
 $errors = array();
 if (isset($_POST['addPost'])) {
     if (isset($_COOKIE['UserId'])) {
@@ -17,7 +22,6 @@ if (isset($_POST['addPost'])) {
         insert_db("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', now(), '$user_id')");
         header('location: index.php');
     }
-
 }
 print_error($errors);
 ?>

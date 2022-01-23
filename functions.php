@@ -46,6 +46,14 @@ function string_db($str)
     return $db_str;
 }
 
+function redirect_to_login(){
+    
+    if ( ! (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId']))) {
+        echo "test";
+        header('location: login.php');
+    }
+}
+
 
 
 

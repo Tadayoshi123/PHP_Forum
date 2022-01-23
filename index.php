@@ -14,6 +14,7 @@
 <body>
 
 	<?php include('navbar.php'); ?>
+	<?php redirect_to_login(); ?>
 
 </body>
 

@@ -17,6 +17,7 @@
 
 <!-- <?php include('navbar.php'); ?> -->
 <?php include('functions.php'); ?>
+<?php redirect_to_login(); ?>
 
 
 
@@ -201,7 +202,7 @@ if (isset($_COOKIE['UserId'])) : ?>
     $nb_articles = mysqli_num_rows($result);
 
     if ($nb_articles != 0) {
-        
+
 
     ?>
         <div>Favourite articles</div>
@@ -248,14 +249,14 @@ if (isset($_COOKIE['UserId'])) : ?>
 
                     $Favourite = select_db("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
 
-                    
+
                     while ($data = mysqli_fetch_array($Favourite)) {
-                    ?>
+            ?>
                         <form method="POST" enctype="multipart/form-data" id="form">
 
                             <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
                         </form>
-                    <?php                        
+            <?php
                     }
                 }
             }

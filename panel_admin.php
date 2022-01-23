@@ -16,6 +16,7 @@
 
 <!-- <?php include('navbar.php'); ?> -->
 <?php include('functions.php'); ?>
+<?php redirect_to_login(); ?>
 
 
 <?php $errors = array();
@@ -31,19 +32,17 @@ if (isset($_POST['edit_user'])) {
     $user_name = string_db($_POST['user_name']);
     $email = string_db($_POST['email']);
     $user_id = string_db($_POST['edit_user']);
-    
+
     $results1 = select_db("SELECT * FROM Users WHERE UserName='$user_name' AND Users.UserID != '$user_id'");
     $results2 = select_db("SELECT * FROM Users WHERE Email='$email' AND Users.UserID != '$user_id'");
     if (mysqli_num_rows($results1) > 0) {
         array_push($errors, "username already exist");
-    } else if(mysqli_num_rows($results2) > 0) {
+    } else if (mysqli_num_rows($results2) > 0) {
         array_push($errors, "email already exist");
-    } else{
+    } else {
         insert_db("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
         header('location: panel_admin.php');
     }
-
-    
 }
 if (isset($_POST['deleteTopic'])) {
 
@@ -106,8 +105,8 @@ if (isset($_COOKIE['AdminId'])) { ?>
                 </tr>
         </table>
 
-        <?php
-        
+    <?php
+
     }
 
     //------------------------------------
@@ -117,7 +116,7 @@ if (isset($_COOKIE['AdminId'])) { ?>
     if ($nb_users == 0) {
         echo "No users has been created yet";
     } else {
-        ?>
+    ?>
         <table width="500" border="1">
             <tr>
                 <td>
@@ -146,7 +145,8 @@ if (isset($_COOKIE['AdminId'])) { ?>
 
 
 
-<?php  } }else{ ?>
+    <?php  }
+} else { ?>
     <?php array_push($errors, "vous devez être connectés pour acceder a cette page") ?>
 <?php } ?>
 

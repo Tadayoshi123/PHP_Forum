@@ -17,6 +17,7 @@
 
 <!-- <?php include('navbar.php'); ?> -->
 <?php include('functions.php'); ?>
+<?php redirect_to_login(); ?>
 
 
 <?php

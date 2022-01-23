@@ -14,11 +14,13 @@
 <body>
 
     <?php include('functions.php'); ?>
+    <?php redirect_to_login(); ?>
 
 
     <?php
 
     include('navbar.php');
+
 
     if (isset($_GET['search'])) {
         //------------------------------------
@@ -50,10 +52,14 @@
         echo "No article found";
     } else {
     ?>
+
+
         <table width="500" border="1">
+
             <thead>
                 <tr>
                     <td>
+
                         Auteur
                     </td>
                     <td>
