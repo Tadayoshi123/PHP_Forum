@@ -15,6 +15,25 @@ function select_db($select_string)
     return $results;
 }
 
+function get_image_db($UserId)
+{
+    $mysqli  = initiate_db();
+    $res = $mysqli->query("SELECT ImageBlob FROM Images WHERE UserId = '$UserId'");
+    $mysqli->close();
+    if ($res->num_rows > 0) {
+        $img = $res->fetch_assoc();
+
+        //Render the image
+        // header("Content-type: image/jpg");
+        // return '<img src="data:image/jpg;base64,' .  base64_encode($img['ImageBlob'])  . '" />';
+         
+        return $img['ImageBlob'];
+    } else {
+        echo 'Image not found...';
+    }
+    
+}
+
 function initiate_db()
 {
     try {

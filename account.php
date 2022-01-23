@@ -23,7 +23,7 @@
 
         //----------------------------
         $user_id = string_db($_COOKIE['UserId']);
-        $results = select_db("SELECT * FROM Users WHERE UserId='$user_id'");
+        $results = select_db("SELECT * FROM Users INNER JOIN Images ON Users.UserId = Images.UserId WHERE Users.UserId='$user_id'");
         if (mysqli_num_rows($results) == 1) {
 
 
@@ -35,45 +35,7 @@
         }
         ?>
 
-        <div class="info_user">
-            <h1 class="pageTitle">Mon Compte</h1>
-            <div class="information">
-                Nom Utilisateur: <?php echo trim($data['UserName']); ?>
-            </div>
-            <br>
-            <div class="information">
-                Mail: <?php echo trim($data['Email']); ?>
-            </div>
-            <br>
 
-            <form method="POST">
-                <div class="information">
-                    <label for="username">Changer de Nom Utilisateur : </label>
-                    <input type="text" placeholder="Nouveau nom" name="username" required>
-                    <button type="submit" class="signupbtn" name="new_user_name">Soumettre</button>
-                </div>
-            </form>
-            <br>
-            <form method="POST">
-                <div class="information">
-                    <label for="email"> Changer de mail : </label>
-                    <input type="text" placeholder="Nouveau mail" name="email" required>
-                    <button type="submit" class="signupbtn" name="new_email">Soumettre</button>
-                </div>
-            </form>
-            <br>
-            <form method="POST">
-                <div class="information">
-                    <label for="password">Changer de Mot de passe : </label>
-                    <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
-                </div>
-                <div class="information">
-                    <label for="psw-repeat"> Confirm new password : </label>
-                    <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
-                    <button type="submit" class="signupbtn" name="new_password">Soumettre</button>
-                </div>
-            </form>
-        </div>
 
         <?php
 
@@ -89,6 +51,26 @@
             } else {
                 insert_db("UPDATE Users SET UserName = '$username' WHERE UserId = '$user_id'");
                 header('location: account.php');
+            }
+        }
+
+        if (isset($_POST['new_avatar'])) {
+            //---------------------------
+            $image_size = getimagesize($_FILES['userImage']['tmp_name']);
+            if ($image_size !== false) {
+                //Get the contents of the image
+                $file = $_FILES['userImage']['tmp_name'];
+                $image = addslashes(file_get_contents($file));
+
+                $query = "SELECT * FROM Images WHERE UserId='$user_id'";
+                $results = select_db($query);
+                if (mysqli_num_rows($results) > 0) {
+                    insert_db("UPDATE Images SET ImageBlob = '$image' WHERE UserId = '$user_id'");
+                    header('location: account.php');
+                } else {
+                    insert_db("INSERT into Images (ImageBlob ,UserId) VALUES ('$image' , '$user_id')");
+                    header('location: account.php');
+                }
             }
         }
 
@@ -142,6 +124,63 @@
             }
 
         ?>
+
+            <div class="info_user">
+                <h1 class="pageTitle">Mon Compte</h1>
+                <div class="information">
+                    Nom Utilisateur: <?php echo trim($data['UserName']); ?>
+                </div>
+                <br>
+                <div class="information">
+                    Mail: <?php echo trim($data['Email']); ?>
+                </div>
+                <div class="information">
+                    Avatar: <?php
+                    echo '<img src="data:image/jpg;base64,' .  base64_encode(get_image_db($data['UserId']))  . '" />';
+
+                    
+                    ?>
+                </div>
+                <br>
+
+                <div>
+                    Nouvel Avatar
+                </div>
+
+                <form enctype="multipart/form-data" method="post">
+                    <label>Upload the image file:</label><br />
+                    <input name="userImage" type="file" />
+                    <button type="submit" class="signupbtn" name="new_avatar">Soumettre</button>
+                </form>
+
+                <form method="POST">
+                    <div class="information">
+                        <label for="username">Changer de Nom Utilisateur : </label>
+                        <input type="text" placeholder="Nouveau nom" name="username" required>
+                        <button type="submit" class="signupbtn" name="new_user_name">Soumettre</button>
+                    </div>
+                </form>
+                <br>
+                <form method="POST">
+                    <div class="information">
+                        <label for="email"> Changer de mail : </label>
+                        <input type="text" placeholder="Nouveau mail" name="email" required>
+                        <button type="submit" class="signupbtn" name="new_email">Soumettre</button>
+                    </div>
+                </form>
+                <br>
+                <form method="POST">
+                    <div class="information">
+                        <label for="password">Changer de Mot de passe : </label>
+                        <input type="password" placeholder="Entrez un mot de passe" name="psw" required>
+                    </div>
+                    <div class="information">
+                        <label for="psw-repeat"> Confirm new password : </label>
+                        <input type="password" placeholder="Réecrivez le mot de passe" name="psw_repeat" required>
+                        <button type="submit" class="signupbtn" name="new_password">Soumettre</button>
+                    </div>
+                </form>
+            </div>
             <div class="myArticles">
                 <h2 class="subPageTitle">Mes Articles</h2>
                 <table>
