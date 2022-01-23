@@ -9,17 +9,15 @@ if (isset($_POST['addPost'])) {
         array_push($errors, "You have to be logged to post a new Article");
     }
 
-    //-------------------------A ranger ? ----------------------------
-
     $title = string_db($_POST['article_Title']);
     $description = string_db($_POST['message_newpost']);
-    $creation_date = string_db(date("Y-m-d H:i:s"));
+    $creation_date = string_db(date("Y-m-d-H-i-s"));
     $user_id = string_db($_COOKIE['UserId']);
     if (count($errors) == 0) {
-        insert_db("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', '$creation_date', '$user_id')");
+        insert_db("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', now(), '$user_id')");
         header('location: index.php');
     }
-    //----------------------------------------------------
+
 }
 print_error($errors);
 ?>

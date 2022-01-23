@@ -17,7 +17,7 @@
         <input type="submit">
     </form>
     <form method="POST">
-        <?php if (isset($_COOKIE['UserId'])) : ?>
+        <?php if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) : ?>
             <button type="submit" class="disconnectbtn" name="deconnexion">Deconnexion</button>
             <?php
             if (isset($_POST['deconnexion'])) {
