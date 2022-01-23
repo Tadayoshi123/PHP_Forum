@@ -116,6 +116,7 @@
             <div class="information">
                 Mail: <?php echo trim($data['Email']); ?>
             </div>
+            <br>
             <div class="information">
                 Avatar: <?php
                         if (get_image_db($data['UserId']) !== null) {

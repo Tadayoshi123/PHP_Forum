@@ -118,3 +118,8 @@ button[name="delFav"] {
     font-weight  : 700;
     width        : 100%;
 }
+
+img {
+    max-width : 10rem;
+    max-height: 10rem;
+}
