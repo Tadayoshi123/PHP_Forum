@@ -16,13 +16,16 @@
 </head>
 
 <?php include('navbar.php'); ?>
+<?php include('functions.php'); ?>
+
 
 <?php $errors = array();
 if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
     if (isset($_GET['ArticleId'])) {
         //----------------------------------------------------
-        $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-        $article_id = mysqli_real_escape_string($mysqli, $_GET['ArticleId']);
+        initiate_db();
+        $user_id = string_db( $_COOKIE['UserId']);
+        $article_id = string_db( $_GET['ArticleId']);
         $results = select_db("SELECT * FROM Articles WHERE UserId='$user_id' AND ArticleId = '$article_id'");
         if (mysqli_num_rows($results) == 1) {
 
@@ -94,14 +97,11 @@ if (isset($_COOKIE['UserId']) || isset($_COOKIE['AdminId'])) {
 
         //------------------------------
         $mysqli = initiate_db();
-        $title = mysqli_real_escape_string($mysqli, $_POST['Titre_sujet']);
-        $description = mysqli_real_escape_string($mysqli, $_POST['message_newpost']);
-        $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-        $article_id = mysqli_real_escape_string($mysqli, $_GET['ArticleId']);
-        $stmt = $mysqli->prepare("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
-        $stmt->execute();
-        echo "Add successfull";
-        $stmt->close();
+        $title = string_db( $_POST['Titre_sujet']);
+        $description = string_db( $_POST['message_newpost']);
+        $user_id = string_db( $_COOKIE['UserId']);
+        $article_id = string_db( $_GET['ArticleId']);
+        insert_db("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
         $mysqli->close();
         header('location: edit.php?ArticleId=' . $article_id);
     }

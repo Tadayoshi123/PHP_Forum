@@ -9,6 +9,8 @@
 </head>
 
 <?php include('navbar.php'); ?>
+<?php include('functions.php'); ?>
+
 
 <?php
 
@@ -62,5 +64,4 @@ if (!isset($_GET['ArticleId'])) {
     </table>
 <?php
 }
-$mysqli->close();
 ?>

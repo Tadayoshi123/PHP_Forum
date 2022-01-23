@@ -15,7 +15,9 @@
 </html>
 
 
-<?php include('navbar.php'); ?>
+<!-- <?php include('navbar.php'); ?> -->
+<?php include('functions.php'); ?>
+
 
 
 <?php $errors = array();
@@ -23,13 +25,11 @@ if (isset($_COOKIE['UserId'])) : ?>
     <?php
 
     //----------------------------
-    $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+    $user_id = string_db( $_COOKIE['UserId']);
     $results = select_db("SELECT * FROM Users WHERE UserId='$user_id'");
-    // echo mysqli_num_rows($results);
     if (mysqli_num_rows($results) == 1) {
 
-        // Numeric array
-        // $row = $results->fetch_array(MYSQLI_NUM);
+
         $data = mysqli_fetch_array($results);
         // Free result set
         $results->free_result();
@@ -86,63 +86,48 @@ if (isset($_COOKIE['UserId'])) : ?>
 
 
 
-    $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+    $user_id = string_db( $_COOKIE['UserId']);
 
 
     if (isset($_POST['new_user_name'])) {
         //---------------------------
-        $username = mysqli_real_escape_string($mysqli, $_POST['username']);
+        $username = string_db( $_POST['username']);
         $query = "SELECT * FROM Users WHERE UserName='$username'";
         $results = select_db($query);
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "username already exist");
         } else {
             //--------------------------------------------
-            $mysqli = initiate_db();
-            $stmt = $mysqli->prepare("UPDATE Users SET UserName = '$username' WHERE UserId = '$user_id'");
-            // $stmt->bind_param("s", $username);
-            $stmt->execute();
+            insert_db("UPDATE Users SET UserName = '$username' WHERE UserId = '$user_id'");
             header('location: account.php');
-            $stmt->close();
-            $mysqli->close();
         }
-        
     }
 
     if (isset($_POST['new_email'])) {
         //--------------------------------------------
-        $mysqli = initiate_db();
-        $email = mysqli_real_escape_string($mysqli, $_POST['email']);
+        $email = string_db( $_POST['email']);
         $results = select_db("SELECT * FROM Users WHERE Email='$email'");
         if (mysqli_num_rows($results) > 0) {
             array_push($errors, "email already exist");
         } else {
-            $stmt = $mysqli->prepare("UPDATE Users SET Email = '$email' WHERE UserId = '$user_id'");
-            $stmt->execute();
+            insert_db("UPDATE Users SET Email = '$email' WHERE UserId = '$user_id'");
             header('location: account.php');
-            $stmt->close();
         }
-        $mysqli->close();
     }
 
     if (isset($_POST['new_password'])) {
         //--------------------------------------------
-        $mysqli = initiate_db();
-        $psw = mysqli_real_escape_string($mysqli, $_POST['psw']);
-        $psw_repeat = mysqli_real_escape_string($mysqli, $_POST['psw_repeat']);
+        $psw = string_db( $_POST['psw']);
+        $psw_repeat = string_db( $_POST['psw_repeat']);
         if ($psw != $psw_repeat) {
 
             array_push($errors, "The two passwords do not match");
         } else {
-            
+
             $bcryptpassword = password_hash($psw, PASSWORD_BCRYPT);
-            $stmt = $mysqli->prepare("UPDATE Users SET Password = '$bcryptpassword' WHERE UserId = '$user_id'");
-            $stmt->execute();
+            insert_db("UPDATE Users SET Password = '$bcryptpassword' WHERE UserId = '$user_id'");
             header('location: account.php');
-            $stmt->close();
-            
         }
-        $mysqli->close();
     }
 
     //----------------------------------
@@ -184,16 +169,12 @@ if (isset($_COOKIE['UserId'])) : ?>
         <?php
         if (isset($_POST['deleteTopic'])) {
             //-----------------------------------------------
-            $mysqli = initiate_db();
-            $article_id = mysqli_real_escape_string($mysqli, $_POST['deleteTopic']);
-            $stmt = $mysqli->prepare("DELETE FROM Articles WHERE ArticleId = '$article_id'");
-            $stmt->execute();
+            $article_id = string_db( $_POST['deleteTopic']);
+            insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
 
 
             echo "Delete successfull";
             header('location: account.php');
-            $stmt->close();
-            $mysqli->close();
         }
     }
     //-----------------------------------------------
@@ -244,11 +225,11 @@ if (isset($_COOKIE['UserId'])) : ?>
                     echo '</td><td>';
 
                     //------------------------------------------
-                    $article_id = mysqli_real_escape_string($mysqli, $data['ArticleId']);
-                    $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+                    $article_id = string_db( $data['ArticleId']);
+                    $user_id = string_db( $_COOKIE['UserId']);
 
                     $Favourite = select_db("SELECT FavouriteId FROM Favourites WHERE UserId='$user_id' AND ArticleId = '$article_id'");
-                    
+
                     if (mysqli_num_rows($Favourite) == 0) {
 
             ?>
@@ -259,14 +240,11 @@ if (isset($_COOKIE['UserId'])) : ?>
 
                         if (isset($_POST['addFav'])) {
                             //-----------------------------------
-                            $mysqli = initiate_db();
-                            $article_id = mysqli_real_escape_string($mysqli, $_POST['addFav']);
-                            $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
+                            $article_id = string_db( $_POST['addFav']);
+                            $user_id = string_db( $_COOKIE['UserId']);
                             insert_db("INSERT INTO Favourites (UserId,ArticleId) VALUES ($user_id, $article_id)");
                             header('location: account.php');
-                            $mysqli->close();
                         }
-                        $mysqli->close();
                     } else {
                         while ($data = mysqli_fetch_array($Favourite)) {
                         ?>
@@ -277,13 +255,9 @@ if (isset($_COOKIE['UserId'])) : ?>
             <?php
                             if (isset($_POST['delFav'])) {
                                 //--------------------------------
-                                $mysqli = initiate_db();
-                                $favourite_id = mysqli_real_escape_string($mysqli, $_POST['delFav']);
-                                $stmt = $mysqli->prepare("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
-                                $stmt->execute();
-                                $stmt->close();
+                                $favourite_id = string_db( $_POST['delFav']);
+                                insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
                                 header('location: account.php');
-                                $mysqli->close();
                             }
                         }
                     }
@@ -295,7 +269,6 @@ if (isset($_COOKIE['UserId'])) : ?>
         </table>
     <?php
     }
-    $mysqli->close();
     ?>
 
 

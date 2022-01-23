@@ -25,16 +25,25 @@ function initiate_db()
     return $mysqli;
 }
 
-function print_error($errors){
+function print_error($errors)
+{
     if (count($errors) > 0) {
-        ?>
-    <div class="error">
-        <?php foreach ($errors as $error) : ?>
-            <p><?php echo $error ?></p>
-        <?php endforeach ?>
-    </div>
+?>
+        <div class="error">
+            <?php foreach ($errors as $error) : ?>
+                <p><?php echo $error ?></p>
+            <?php endforeach ?>
+        </div>
     <?php
     }
+}
+
+function string_db($str)
+{
+    $mysqli  = initiate_db();
+    $db_str = mysqli_real_escape_string($mysqli, $str);
+    $mysqli->close();
+    return $db_str;
 }
 
 

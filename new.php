@@ -16,6 +16,7 @@
 </head>
 
 <body>
+    <?php include('functions.php'); ?>
 
     <?php include('navbar.php'); ?>
 
@@ -59,20 +60,15 @@ if (isset($_POST['addTopic'])) {
 
     //-------------------------A ranger ? ----------------------------
 
-    $mysqli = initiate_db();
-
-    $title = mysqli_real_escape_string($mysqli, $_POST['Titre_sujet']);
-    $description = mysqli_real_escape_string($mysqli, $_POST['message_newpost']);
-    $creation_date = mysqli_real_escape_string($mysqli, date("Y-m-d H:i:s"));
-    $user_id = mysqli_real_escape_string($mysqli, $_COOKIE['UserId']);
-    $mysqli->close();
+    $title = string_db( $_POST['Titre_sujet']);
+    $description = string_db( $_POST['message_newpost']);
+    $creation_date = string_db( date("Y-m-d H:i:s"));
+    $user_id = string_db( $_COOKIE['UserId']);
     if (count($errors) == 0) {
         insert_db("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', '$creation_date', '$user_id')");
         header('location: index.php');
     }
-    $mysqli->close();
     //----------------------------------------------------
 }
 print_error($errors);
 ?>
-

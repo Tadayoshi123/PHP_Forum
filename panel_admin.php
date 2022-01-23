@@ -14,13 +14,16 @@
 
 </html>
 
+<?php include('navbar.php'); ?>
+<?php include('functions.php'); ?>
+
+
 <?php $errors = array();
 if (isset($_COOKIE['AdminId'])) : ?>
     Article list:
     <?php
     //--------------------------------------
-    $mysqli = initiate_db();
-    $result = $mysqli->query("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
+    $result = select_db("SELECT * From Articles ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
 
     $nb_articles = mysqli_num_rows($result);
 
@@ -63,28 +66,18 @@ if (isset($_COOKIE['AdminId'])) : ?>
         if (isset($_POST['deleteTopic'])) {
 
             //--------------------------------------------
-            $mysqli = initiate_db();
-            $article_id = mysqli_real_escape_string($mysqli, $_POST['deleteTopic']);
-            $stmt = $mysqli->prepare("DELETE FROM Articles WHERE ArticleId = '$article_id'");
-            $stmt->execute();
-            echo "Delete successfull";
+            $article_id = string_db( $_POST['deleteTopic']);
+            insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
             header('location: panel_admin.php');
-            $stmt->close();
-            $mysqli->close();
         }
         if (isset($_POST['editTopic'])) {
 
             //--------------------------------------------
-            $mysqli = initiate_db();
-            $title = mysqli_real_escape_string($mysqli, $_POST['Titre']);
-            $description = mysqli_real_escape_string($mysqli, $_POST['description']);
-            $article_id = mysqli_real_escape_string($mysqli, $_POST['editTopic']);
-            $stmt = $mysqli->prepare("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
-            $stmt->execute();
-            echo "Edit successfull";
+            $title = string_db( $_POST['Titre']);
+            $description = string_db( $_POST['description']);
+            $article_id = string_db( $_POST['editTopic']);
+            insert_db("UPDATE Articles SET Title = '$title', Description = '$description' WHERE ArticleId = '$article_id'");
             header('location: panel_admin.php');
-            $stmt->close();
-            $mysqli->close();
         }
     }
 
@@ -126,27 +119,17 @@ if (isset($_COOKIE['AdminId'])) : ?>
         if (isset($_POST['delete_user'])) {
 
             //-----------------------------------------
-            $mysqli = initiate_db();
-            $user_id = mysqli_real_escape_string($mysqli, $_POST['delete_user']);
-            $stmt = $mysqli->prepare("DELETE FROM Users WHERE UserId = '$user_id'");
-            $stmt->execute();
-            echo "Delete successfull";
+            $user_id = string_db( $_POST['delete_user']);
+            insert_db("DELETE FROM Users WHERE UserId = '$user_id'");
             header('location: panel_admin.php');
-            $stmt->close();
-            $mysqli->close();
         }
         if (isset($_POST['edit_user'])) {
             //----------------------------------
-            $mysqli = initiate_db();
-            $user_name = mysqli_real_escape_string($mysqli, $_POST['user_name']);
-            $email = mysqli_real_escape_string($mysqli, $_POST['email']);
-            $user_id = mysqli_real_escape_string($mysqli, $_POST['edit_user']);
-            $stmt = $mysqli->prepare("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
-            $stmt->execute();
-            echo "Add successfull";
+            $user_name = string_db( $_POST['user_name']);
+            $email = string_db( $_POST['email']);
+            $user_id = string_db( $_POST['edit_user']);
+            insert_db("UPDATE Users SET UserName = '$user_name', Email = '$email' WHERE UserId = '$user_id'");
             header('location: panel_admin.php');
-            $stmt->close();
-            $mysqli->close();
         }
     }
     ?>
