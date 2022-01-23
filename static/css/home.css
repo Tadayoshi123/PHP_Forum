@@ -1,8 +1,9 @@
 table {
-    border    : 3px solid #222;
-    color     : #cccccc;
-    margin-top: 10%;
-    width     : 100%;
+    border          : 3px solid #222;
+    background-color: #1c1c1c;
+    color           : #cccccc;
+    margin-top      : 10%;
+    width           : 100%;
 }
 
 thead {
@@ -20,7 +21,7 @@ td {
 }
 
 a {
-    color          : #cccccc;
+    color          : #ff9000;
     text-decoration: none;
 }
 
