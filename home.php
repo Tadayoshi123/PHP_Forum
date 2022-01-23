@@ -31,6 +31,21 @@
         $nb_articles = mysqli_num_rows($result);
     }
 
+    if (isset($_POST['addFav'])) {
+        //-----------------------------------------
+        $article_id = string_db($_POST['addFav']);
+        $user_id = string_db($_COOKIE['UserId']);
+        insert_db("INSERT INTO Favourites (UserId,ArticleId) VALUES  ('$user_id', '$article_id')");
+        header('location: home.php');
+    }
+
+    if (isset($_POST['delFav'])) {
+        //---------------------------
+        $favourite_id = string_db($_POST['delFav']);
+        insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
+        header('location: home.php');
+    }
+
     if ($nb_articles == 0) {
         echo "No article found";
     } else {
@@ -98,20 +113,7 @@
                     }
                 }
 
-                if (isset($_POST['addFav'])) {
-                    //-----------------------------------------
-                    $article_id = string_db($_POST['addFav']);
-                    $user_id = string_db($_COOKIE['UserId']);
-                    insert_db("INSERT INTO Favourites (UserId,ArticleId) VALUES  ('$user_id', '$article_id')");
-                    header('location: home.php');
-                }
-
-                if (isset($_POST['delFav'])) {
-                    //---------------------------
-                    $favourite_id = string_db($_POST['delFav']);
-                    insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
-                    header('location: home.php');
-                }
+                
                 ?>
                 </td>
                 </tr>
