@@ -32,9 +32,10 @@ body {
     background-color: #181818;
 }
 
-input[type=text] {
+input[name="search"] {
     border          : none;
     border-radius   : 5px;
+    padding         : 5px;
     color           : #cacaca;
     background-color: #363636;
     font-style      : italic;
@@ -42,7 +43,19 @@ input[type=text] {
 
 input[type=submit] {
     border       : none;
-    border-radius: 5px;
+    border-radius: 4px;
+    padding      : 5px;
     background   : #f90;
     color        : #000;
+    font-weight  : 700;
+}
+
+button[name=deconnexion] {
+    background     : #363636;
+    color          : #acacac;
+    font-weight    : 700;
+    text-decoration: none;
+    border         : none;
+    border-radius  : 4px;
+    padding        : 5px;
 }

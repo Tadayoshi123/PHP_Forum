@@ -4,8 +4,8 @@
 $errors = array();
 if (isset($_POST['login_user'])) {
     //----------------------------------
-    $email = string_db( $_POST['user_mail']);
-    $password = string_db( $_POST['user_password']);
+    $email = string_db($_POST['user_mail']);
+    $password = string_db($_POST['user_password']);
     $bcryptpassword = password_hash($password, PASSWORD_BCRYPT);
     $results = select_db("SELECT UserId, Password FROM Users WHERE Email='$email'");
 
@@ -45,33 +45,14 @@ if (isset($_POST['login_user'])) {
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Forum</title>
-    <link rel="icon" href="/static/img/icon/forum.png">
-    <link rel="stylesheet" href="/static/css/logincss.php">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
+    <title>Connexion</title>
     <style>
         <?php include 'static/css/login.css'; ?>
     </style>
 </head>
 
 <body>
-    <div class="navbar">
-        <a href="/php_forum/login.php">Connexion</a>
-        <a href="/php_forum/register.php">Inscription</a>
-        <a href="/php_forum/home.php">Accueil</a>
-        <a href="/php_forum/new.php">Nouveau Post</a>
-        <a href="/php_forum/details.php">Details</a>
-        <a href="/php_forum/edit.php">Modifier</a>
-        <a href="/php_forum/account.php">Compte</a>
-        <a href="/php_forum/login_admin.php">Connexion Admin</a>
-        <a href="/php_forum/panel_admin.php">Panel Admin</a>
-        <form class="searchbar" method="post">
-            <input type="text" placeholder="Cherchez un article" name="search" value="<?php echo isset($_GET['search']) ? $_GET['search'] : ''; ?>">
-            <input type="submit" name="submit">
-        </form>
-
-    </div>
+    <?php include('navbar.php'); ?>
     <div class="connexion">
         <h1 class="pageTitle">Connexion</h1>
         <div class="loginForm">
@@ -92,11 +73,9 @@ if (isset($_POST['login_user'])) {
                 </div>
             </form>
         </div>
-        <div class="otherLogin padding flex">
-            <div class="O-inscription">
-                <p>Vous n'avez pas de compte ?</p>
-                <a class="REGISTER" href="/php_forum/register.php">Inscrivez-vous ici</a>
-            </div>
+        <div class="otherLogin">
+            <p>Vous n'avez pas de compte ?</p>
+            <a class="REGISTER" href="/php_forum/register.php">Inscrivez-vous ici</a>
         </div>
     </div>
 </body>

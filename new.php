@@ -1,69 +1,20 @@
-<!DOCTYPE html>
-<html lang="FR">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projet Forum</title>
-    <link rel="icon" href="/static/img/icon/forum.png">
-    <!-- fontstyle -->
-    <link rel="stylesheet" href="/static/css/newpost.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Lobster&display=swap" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat+Alternates:wght@300&display=swap" rel="stylesheet">
-</head>
-
-<body>
-    <?php include('functions.php'); ?>
-
-    <?php include('navbar.php'); ?>
-
-    <div class="new__post">
-        <div class="N-title flex padding">
-            <h1>Nouveau Topic</h1>
-        </div>
-        <!-- <p class="obligation">{{.Error}}</p> -->
-        <div class="NewpostForm flex padding">
-            <form method="POST" enctype="multipart/form-data" id="form">
-                <div class="Titre_post">
-                    <label for="titre-sujet" id="titre-sujet">Titre du Sujet : </label>
-                    <br>
-                    <input type="text" id="Titre_sujet" name="Titre_sujet" required>
-                    <br>
-                </div>
-                <div class="text_area">
-                    <label for="message">Message : </label>
-                    <br>
-                    <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" value="Ecrivez quelque chose ..." required></textarea>
-                </div>
-        </div>
-        <div class="btn-newpost flex">
-            <div>
-                <button class="Newpost_submit" type="submit" name="addTopic">Soumettre</button>
-            </div>
-        </div>
-        </form>
-    </div>
-    </div>
-</body>
-
 <?php
 
+include('functions.php');
+
 $errors = array();
-if (isset($_POST['addTopic'])) {
+if (isset($_POST['addPost'])) {
     if (isset($_COOKIE['UserId'])) {
     } else {
-        array_push($errors, "You have to be logged to pos a new Article");
+        array_push($errors, "You have to be logged to post a new Article");
     }
 
     //-------------------------A ranger ? ----------------------------
 
-    $title = string_db( $_POST['Titre_sujet']);
-    $description = string_db( $_POST['message_newpost']);
-    $creation_date = string_db( date("Y-m-d H:i:s"));
-    $user_id = string_db( $_COOKIE['UserId']);
+    $title = string_db($_POST['article_Title']);
+    $description = string_db($_POST['message_newpost']);
+    $creation_date = string_db(date("Y-m-d H:i:s"));
+    $user_id = string_db($_COOKIE['UserId']);
     if (count($errors) == 0) {
         insert_db("INSERT INTO Articles (Title,Description,CreationDate,UserId) VALUES ('$title', '$description', '$creation_date', '$user_id')");
         header('location: index.php');
@@ -72,3 +23,43 @@ if (isset($_POST['addTopic'])) {
 }
 print_error($errors);
 ?>
+<!DOCTYPE html>
+<html lang="FR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nouveau Post</title>
+    <style>
+        <?php include 'static/css/new.css'; ?>
+    </style>
+</head>
+
+<body>
+
+    <?php include('navbar.php'); ?>
+
+    <div class="new__post">
+        <h1 class="pageTitle">Nouvel Article</h1>
+        <!-- <p class="obligation">{{.Error}}</p> -->
+        <div class="newpostForm">
+            <form method="POST" enctype="multipart/form-data" id="form">
+                <div class="post_Title">
+                    <label for="articleTitle" id="articleTitle">Titre de l'article : </label>
+                    <br>
+                    <input type="text" id="article_Title" name="article_Title" placeholder="Entrez le titre de l'article" required>
+                    <br>
+                </div>
+                <div class="text_area">
+                    <label for="message">Message : </label>
+                    <br>
+                    <textarea name="message_newpost" id="message_newpost" cols="30" rows="10" value="Ecrivez quelque chose ..." required></textarea>
+                </div>
+        </div>
+        <button class="Newpost_submit" type="submit" name="addPost">Soumettre</button>
+        </form>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+table {
+    border    : 3px solid #222;
+    color     : #cccccc;
+    margin-top: 10%;
+    width     : 100%;
+}
+
+thead {
+    background-color: #1c1c1c;
+    font-size       : 1.5rem;
+}
+
+tbody {
+    background-color: #101010;
+    font-size       : 1.2rem;
+}
+
+td {
+    padding: 8px;
+}
+
+a {
+    color          : #cccccc;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline #ff9000;
+}
+
+button[name="addFav"] {
+    border       : none;
+    border-radius: 4px;
+    padding      : 5px;
+    background   : #f90;
+    color        : #000;
+    font-weight  : 700;
+    width        : 100%;
+}
+
+button[name="delFav"] {
+    border       : none;
+    border-radius: 4px;
+    padding      : 5px;
+    background   : #363636;
+    color        : #acacac;
+    font-weight  : 700;
+    width        : 100%;
+}
