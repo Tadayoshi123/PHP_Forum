@@ -92,7 +92,6 @@
                                     <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
                                 </form>
                 <?php
-
                             }
                         }
                     }
