@@ -54,12 +54,10 @@
     ?>
 
 
-        <table width="500" border="1">
-
+        <table>
             <thead>
                 <tr>
                     <td>
-
                         Auteur
                     </td>
                     <td>
