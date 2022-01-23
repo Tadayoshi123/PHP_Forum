@@ -97,14 +97,14 @@
 
                 ?>
                             <form method="POST" enctype="multipart/form-data" id="form">
-                                <button type="submit" name="addFav" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Add Favourite</button>
+                                <button type="submit" name="addFav" value=" <?php echo htmlentities(trim($data['ArticleId'])); ?>">Ajouter aux favoris</button>
                             </form>
                             <?php
                         } else {
                             while ($data = mysqli_fetch_array($Favourite)) {
                             ?>
                                 <form method="POST" enctype="multipart/form-data" id="form">
-                                    <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">delete Favourite</button>
+                                    <button type="submit" name="delFav" value="<?php echo $data['FavouriteId']; ?>">Supprimer des favoris</button>
                                 </form>
                 <?php
                             }
@@ -112,7 +112,7 @@
                     }
                 }
 
-                
+
                 ?>
                 </td>
                 </tr>
