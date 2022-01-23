@@ -23,7 +23,7 @@
 
         //----------------------------
         $user_id = string_db($_COOKIE['UserId']);
-        $results = select_db("SELECT * FROM Users INNER JOIN Images ON Users.UserId = Images.UserId WHERE Users.UserId='$user_id'");
+        $results = select_db("SELECT * FROM Users WHERE Users.UserId='$user_id'");
         if (mysqli_num_rows($results) == 1) {
 
 
@@ -103,25 +103,7 @@
         //----------------------------------
         $result = select_db("SELECT * From Articles WHERE UserId = '$user_id' ORDER BY CreationDate DESC"); // On utilise l'instance créée pour faire une requête
 
-        if (mysqli_num_rows($result) == 0) {
-            echo "No article has been created yet";
-        } else {
-
-            if (isset($_POST['deleteTopic'])) {
-                //-----------------------------------------------
-                $article_id = string_db($_POST['deleteTopic']);
-                insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
-
-
-                echo "Delete successfull";
-                header('location: account.php');
-            }
-            if (isset($_POST['delFav'])) {
-                //--------------------------------
-                $favourite_id = string_db($_POST['delFav']);
-                insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
-                header('location: account.php');
-            }
+        
 
         ?>
 
@@ -181,6 +163,27 @@
                     </div>
                 </form>
             </div>
+            <?php
+            if (mysqli_num_rows($result) == 0) {
+            echo "No article has been created yet";
+        } else {
+
+            if (isset($_POST['deleteTopic'])) {
+                //-----------------------------------------------
+                $article_id = string_db($_POST['deleteTopic']);
+                insert_db("DELETE FROM Articles WHERE ArticleId = '$article_id'");
+
+
+                echo "Delete successfull";
+                header('location: account.php');
+            }
+            if (isset($_POST['delFav'])) {
+                //--------------------------------
+                $favourite_id = string_db($_POST['delFav']);
+                insert_db("DELETE FROM Favourites WHERE FavouriteId = '$favourite_id'");
+                header('location: account.php');
+            }
+            ?>
             <div class="myArticles">
                 <h2 class="subPageTitle">Mes Articles</h2>
                 <table>

@@ -24,6 +24,9 @@ if (!isset($_GET['ArticleId'])) {
 } else {
     //----------------------------------------------------
     $results = select_db("SELECT Title, Description, CreationDate , UserName, ArticleId FROM Articles  INNER JOIN Users ON Users.UserId = Articles.UserId "); // On utilise l'instance créée pour faire une requête
+
+    while ($data = mysqli_fetch_array($results)) {
+        if ($data['ArticleId'] == $_GET['ArticleId']) {
 ?>
     <table width="500" border="1">
         <thead>
@@ -45,8 +48,7 @@ if (!isset($_GET['ArticleId'])) {
         <tbody>
             <?php
 
-            while ($data = mysqli_fetch_array($results)) {
-                if ($data['ArticleId'] == $_GET['ArticleId']) {
+            
 
                     echo "<td>";
                     // on affiche le nom de l'auteur de l'article
@@ -63,13 +65,14 @@ if (!isset($_GET['ArticleId'])) {
                     // on affiche la date de création de l'article
                     echo $data['CreationDate'];
                     echo '</td></tr>';
-                }
-            }
+                
             ?>
             </td>
             </tr>
         </tbody>
     </table>
 <?php
+        }
+    }
 }
 ?>
