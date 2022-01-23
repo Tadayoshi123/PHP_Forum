@@ -1,8 +1,0 @@
-CREATE TABLE Articles
-(
-    ArticleId INTEGER PRIMARY KEY AUTO_INCREMENT NOT NULL,
-    Title VARCHAR(80) NOT NULL,
-    Description VARCHAR(80) NOT NULL,
-    CreationDate DATE NOT NULL,
-    UserId INTEGER NOT NULL
-)
