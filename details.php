@@ -28,27 +28,27 @@ if (!isset($_GET['ArticleId'])) {
     while ($data = mysqli_fetch_array($results)) {
         if ($data['ArticleId'] == $_GET['ArticleId']) {
 ?>
-    <table width="500" border="1">
-        <thead>
-            <tr>
-                <td>
-                    Titre
-                </td>
-                <td>
-                    Description
-                </td>
-                <td>
-                    Auteur
-                </td>
-                <td>
-                    Date de création
-                </td>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+            <table width="500" border="1">
+                <thead>
+                    <tr>
+                        <td>
+                            Auteur
+                        </td>
+                        <td>
+                            Titre
+                        </td>
+                        <td>
+                            Description
+                        </td>
+                        <td>
+                            Date de création
+                        </td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
 
-            
+
 
                     echo "<td>";
                     // on affiche le nom de l'auteur de l'article
@@ -65,12 +65,12 @@ if (!isset($_GET['ArticleId'])) {
                     // on affiche la date de création de l'article
                     echo $data['CreationDate'];
                     echo '</td></tr>';
-                
-            ?>
-            </td>
-            </tr>
-        </tbody>
-    </table>
+
+                    ?>
+                    </td>
+                    </tr>
+                </tbody>
+            </table>
 <?php
         }
     }
