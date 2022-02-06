@@ -50,8 +50,6 @@ $errors = array();
 
 
 if (isset($_POST['reg_user'])) {
-
-
     // ----------------------------------------------------
     $admin_name = string_db($_POST['username']);
     $psw = string_db($_POST['psw']);
