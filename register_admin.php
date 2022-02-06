@@ -23,10 +23,6 @@
                     <label for="username"> Pseudo : </label>
                     <input type="text" placeholder="Entrez un Pseudo" name="username" required>
                 </div>
-                <div class="email">
-                    <label for="email"> Email : </label>
-                    <input type="email" placeholder="Entrez votre email" name="email" required>
-                </div>
                 <div class="password">
                     <label for="password"> Mot de Passe : </label>
                     <input type="password" placeholder="Entrez un mot de passe" name="psw" required>

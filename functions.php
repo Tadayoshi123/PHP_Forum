@@ -22,15 +22,9 @@ function get_image_db($UserId)
     $mysqli->close();
     if ($res->num_rows > 0) {
         $img = $res->fetch_assoc();
-
-        //Render the image
-        // header("Content-type: image/jpg");
-        // return '<img src="data:image/jpg;base64,' .  base64_encode($img['ImageBlob'])  . '" />';
-         
         return $img['ImageBlob'];
     } 
     return null;
-    
 }
 
 function initiate_db()

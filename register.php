@@ -4,8 +4,6 @@
 
 $errors = array();
 
-
-
 if (isset($_POST['reg_user'])) {
 
     $username = string_db($_POST['username']);
